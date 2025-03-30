@@ -1,13 +1,52 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/db');
 
-const transactionSchema = new mongoose.Schema({
-    user_id: { type: String, required: true },
-    amount: { type: Number, required: true },
-    merchant: { type: String, required: true },
-    location: { type: String, required: true },
-    timestamp: { type: Date, default: Date.now },
-    is_fraud: { type: Boolean, default: false },
-    fraud_score: { type: Number, default: 0 }
+const Transaction = sequelize.define('Transaction', {
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'Users',
+            key: 'id'
+        }
+    },
+    amount: {
+        type: DataTypes.DECIMAL(12, 2),
+        allowNull: false
+    },
+    merchant: {
+        type: DataTypes.STRING(100),
+        allowNull: false
+    },
+    location: {
+        type: DataTypes.STRING(100),
+        allowNull: false
+    },
+    transaction_date: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+    },
+    is_fraud: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
+    fraud_score: {
+        type: DataTypes.DECIMAL(5, 2),
+        defaultValue: 0,
+        validate: {
+            min: 0,
+            max: 100
+        }
+    }
+}, {
+    indexes: [
+        {
+            fields: ['user_id']
+        },
+        {
+            fields: ['transaction_date']
+        }
+    ]
 });
 
-module.exports = mongoose.model('Transaction', transactionSchema);
+module.exports = Transaction;

@@ -1,8 +1,29 @@
-const mongoose = require('mongoose');
+const { DataTypes, Op } = require('sequelize');
+const { sequelize } = require('../config/db');
 
-const blacklistedTokenSchema = new mongoose.Schema({
-    token: { type: String, required: true }, // The blacklisted token
-    createdAt: { type: Date, default: Date.now, expires: '1h' }, // Automatically delete after 1 hour
+const BlacklistedToken = sequelize.define('BlacklistedToken', {
+    token: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+}, {
+    timestamps: true,
+    indexes: [{
+        fields: ['createdAt'],
+        using: 'BTREE'
+    }]
 });
 
-module.exports = mongoose.model('BlacklistedToken', blacklistedTokenSchema);
+// Clean up old tokens periodically
+setInterval(async () => {
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+    await BlacklistedToken.destroy({
+        where: {
+            createdAt: {
+                [Op.lt]: oneHourAgo
+            }
+        }
+    });
+}, 60 * 60 * 1000); // Run every hour
+
+module.exports = BlacklistedToken;

@@ -1,13 +1,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
-const connectDB = require('./config/db');
+const { sequelize, connectDB } = require('./config/db'); // Update this line
 const userRoutes = require('./routes/user.routes');
-const authRoutes = require('./routes/auth.routes'); // Add this line
+const authRoutes = require('./routes/auth.routes');
 const cors = require('cors');
 
 dotenv.config();
-connectDB();
+// Initialize database connection
+connectDB()
+    .then(() => console.log('Database initialized'))
+    .catch(err => {
+        console.error('Database initialization failed:', err);
+        process.exit(1);
+    });
 
 const app = express();
 app.use(bodyParser.json());
@@ -21,7 +27,7 @@ app.use(cors({
 
 // Routes
 app.use('/api', userRoutes);
-app.use('/auth', authRoutes); // Add this line
+app.use('/auth', authRoutes);
 
 app.get('/', (req, res) => {
     res.send('Welcome to the HackNuThon API!');

@@ -11,14 +11,20 @@ router.post('/register', async (req, res) => {
         const { username, email, password, role } = req.body;
         
         // Check if the email already exists
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ 
+            where: { email }
+        });
         if (existingUser) {
             return res.status(400).json({ error: 'Email already exists' });
         }
 
         // Create a new user
-        const user = new User({ username, email, password, role }); // Ensure all fields are passed
-        await user.save();
+        const user = await User.create({ 
+            username, 
+            email, 
+            password, 
+            role 
+        });
 
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
@@ -33,7 +39,9 @@ router.post('/login', async (req, res) => {
         const { email, password } = req.body;
 
         // Find the user by email
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ 
+            where: { email } 
+        });
         if (!user) {
             return res.status(400).json({ error: 'Invalid email or password' });
         }
@@ -45,14 +53,27 @@ router.post('/login', async (req, res) => {
         }
 
         // Generate a JWT token
-        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
             expiresIn: '1h',
         });
 
-        // Remove any blacklisted tokens for this user
-        await BlacklistedToken.deleteMany({ token });
+        // Clean up old blacklisted tokens for this user (using Sequelize's destroy)
+        await BlacklistedToken.destroy({
+            where: { token }
+        });
 
-        res.status(200).json({ message: 'Login successful', token, user: { username: user.username, email: user.email, role: user.role } });
+        // Update last login time
+        await user.update({ last_login: new Date() });
+
+        res.status(200).json({ 
+            message: 'Login successful', 
+            token, 
+            user: { 
+                username: user.username, 
+                email: user.email, 
+                role: user.role 
+            } 
+        });
     } catch (error) {
         console.error('Error during login:', error.message);
         res.status(500).json({ error: 'Internal server error' });

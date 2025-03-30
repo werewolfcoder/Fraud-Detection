@@ -1,0 +1,51 @@
+Customer_ID,Customer_Name,Gender,Age,State,City,Bank_Branch,Account_Type,Transaction_ID,Transaction_Date,Transaction_Time,Transaction_Amount,Merchant_ID,Transaction_Type,Merchant_Category,Account_Balance,Transaction_Device,Transaction_Location,Device_Type,Is_Fraud,Transaction_Currency,Customer_Contact,Transaction_Description,Customer_Email
+1,John Doe,Male,35,California,Los Angeles,LA Branch,Savings,TXN001,15-03-2025,14:30:00,200.50,MID001,Online,Electronics,5000.75,Mobile,Los Angeles,Mobile,0,USD,1234567890,Purchase,john@example.com
+2,Jane Smith,Female,28,Texas,Dallas,DF Branch,Current,TXN002,15-03-2025,15:00:00,150.00,MID002,POS,Groceries,3000.40,ATM,Dallas,Desktop,0,USD,0987654321,Purchase,jane@example.com
+3,Bob Johnson,Male,42,New York,New York,NY Branch,Savings,TXN003,15-03-2025,16:15:00,500.00,MID003,Online,Clothing,7000.80,Mobile,New York,Mobile,1,USD,1122334455,Refund,bob@example.com
+4,Sarah Williams,Female,31,Florida,Miami,MI Branch,Current,TXN004,15-03-2025,09:45:00,75.25,MID004,POS,Restaurant,4200.60,Card,Miami,Card,0,USD,1567890342,Dining,sarah@example.com
+5,Michael Brown,Male,45,Illinois,Chicago,CH Branch,Savings,TXN005,15-03-2025,11:20:00,1200.00,MID005,Online,Electronics,8500.00,Desktop,Chicago,Desktop,0,USD,1890234567,Purchase,michael@example.com
+6,Emily Davis,Female,29,Washington,Seattle,SE Branch,Current,TXN006,15-03-2025,13:10:00,45.90,MID006,POS,Groceries,3200.30,Card,Seattle,Card,0,USD,1345678901,Grocery,emily@example.com
+7,David Wilson,Male,38,California,San Francisco,SF Branch,Savings,TXN007,15-03-2025,17:45:00,2300.00,MID007,Online,Jewelry,15000.50,Mobile,San Francisco,Mobile,1,USD,1789054321,Purchase,david@example.com
+8,Jessica Lee,Female,33,Texas,Houston,HU Branch,Current,TXN008,15-03-2025,19:30:00,85.00,MID008,POS,Gas Station,4100.75,Card,Houston,Card,0,USD,1456789032,Fuel,jessica@example.com
+9,Robert Taylor,Male,50,New York,Buffalo,BF Branch,Savings,TXN009,15-03-2025,21:15:00,350.00,MID009,Online,Travel,9200.25,Desktop,Buffalo,Desktop,0,USD,1123456789,Booking,robert@example.com
+10,Amanda Clark,Female,27,Pennsylvania,Philadelphia,PH Branch,Current,TXN010,15-03-2025,22:05:00,25.50,MID010,POS,Pharmacy,3800.40,Card,Philadelphia,Card,0,USD,1567890123,Medicine,amanda@example.com
+11,Daniel White,Male,41,California,San Diego,SD Branch,Savings,TXN011,16-03-2025,08:20:00,1800.00,MID011,Online,Electronics,7400.80,Mobile,San Diego,Mobile,1,USD,1345678901,Purchase,daniel@example.com
+12,Olivia Harris,Female,36,Ohio,Columbus,CO Branch,Current,TXN012,16-03-2025,10:45:00,95.75,MID012,POS,Groceries,5100.60,ATM,Columbus,Desktop,0,USD,1789056789,Grocery,olivia@example.com
+13,James Martin,Male,48,Michigan,Detroit,DT Branch,Savings,TXN013,16-03-2025,12:30:00,420.00,MID013,Online,Furniture,10300.00,Desktop,Detroit,Desktop,0,USD,1567890456,Home,james@example.com
+14,Sophia Allen,Female,30,Georgia,Atlanta,AT Branch,Current,TXN014,16-03-2025,14:15:00,65.30,MID014,POS,Restaurant,4700.25,Card,Atlanta,Card,0,USD,1890123456,Dining,sophia@example.com
+15,William Young,Male,44,Colorado,Denver,DN Branch,Savings,TXN015,16-03-2025,16:50:00,2500.00,MID015,Online,Electronics,12500.75,Mobile,Denver,Mobile,1,USD,1345678123,Purchase,william@example.com
+16,Emma King,Female,31,Arizona,Phoenix,PH Branch,Current,TXN016,16-03-2025,18:30:00,110.00,MID016,POS,Entertainment,3900.40,Card,Phoenix,Card,0,USD,1789012345,Movie,emma@example.com
+17,Christopher Scott,Male,37,Washington,Seattle,SE Branch,Savings,TXN017,16-03-2025,20:15:00,75.00,MID017,Online,Streaming,6800.90,Mobile,Seattle,Mobile,0,USD,1567890789,Subscription,chris@example.com
+18,Madison Green,Female,29,Oregon,Portland,PT Branch,Current,TXN018,16-03-2025,22:00:00,55.50,MID018,POS,Groceries,4300.60,Card,Portland,Card,0,USD,1890123789,Grocery,madison@example.com
+19,Andrew Adams,Male,52,Florida,Tampa,TA Branch,Savings,TXN019,17-03-2025,09:30:00,3200.00,MID019,Online,Jewelry,15800.25,Desktop,Tampa,Desktop,1,USD,1345690123,Purchase,andrew@example.com
+20,Isabella Nelson,Female,34,Illinois,Chicago,CH Branch,Current,TXN020,17-03-2025,11:45:00,90.25,MID020,POS,Restaurant,5200.75,Card,Chicago,Card,0,USD,1789012567,Dining,isabella@example.com
+21,Matthew Carter,Male,40,Texas,Austin,AU Branch,Savings,TXN021,17-03-2025,13:20:00,180.00,MID021,Online,Clothing,8700.40,Mobile,Austin,Mobile,0,USD,1567890456,Apparel,matthew@example.com
+22,Ava Mitchell,Female,27,New York,New York,NY Branch,Current,TXN022,17-03-2025,15:10:00,40.00,MID022,POS,Pharmacy,3600.90,Card,New York,Card,0,USD,1890123456,Medicine,ava@example.com
+23,Joshua Roberts,Male,46,California,San Jose,SJ Branch,Savings,TXN023,17-03-2025,17:45:00,1500.00,MID023,Online,Electronics,10200.50,Desktop,San Jose,Desktop,0,USD,1345678234,Purchase,joshua@example.com
+24,Mia Phillips,Female,33,Pennsylvania,Pittsburgh,PI Branch,Current,TXN024,17-03-2025,19:30:00,125.75,MID024,POS,Groceries,4400.25,Card,Pittsburgh,Card,0,USD,1789012890,Grocery,mia@example.com
+25,Daniel Evans,Male,39,Massachusetts,Boston,BO Branch,Savings,TXN025,17-03-2025,21:15:00,2800.00,MID025,Online,Travel,13500.00,Mobile,Boston,Mobile,1,USD,1567890123,Vacation,daniel@example.com
+26,Charlotte Turner,Female,28,Maryland,Baltimore,BA Branch,Current,TXN026,18-03-2025,08:45:00,60.50,MID026,POS,Restaurant,4800.60,Card,Baltimore,Card,0,USD,1890123678,Dining,charlotte@example.com
+27,Joseph Baker,Male,43,Georgia,Atlanta,AT Branch,Savings,TXN027,18-03-2025,10:30:00,95.00,MID027,Online,Entertainment,7900.40,Desktop,Atlanta,Desktop,0,USD,1345678345,Concert,joseph@example.com
+28,Harper Hall,Female,31,North Carolina,Charlotte,CL Branch,Current,TXN028,18-03-2025,12:15:00,35.25,MID028,POS,Pharmacy,4100.90,Card,Charlotte,Card,0,USD,1789012456,Medicine,harper@example.com
+29,Samuel Young,Male,47,Virginia,Richmond,RI Branch,Savings,TXN029,18-03-2025,14:50:00,2000.00,MID029,Online,Electronics,11200.75,Mobile,Richmond,Mobile,1,USD,1567890567,Purchase,samuel@example.com
+30,Amelia Wright,Female,30,Tennessee,Nashville,NA Branch,Current,TXN030,18-03-2025,16:30:00,85.00,MID030,POS,Groceries,4600.25,Card,Nashville,Card,0,USD,1890123789,Grocery,amelia@example.com
+31,David Lopez,Male,38,Indiana,Indianapolis,IN Branch,Savings,TXN031,18-03-2025,18:15:00,120.00,MID031,Online,Clothing,8300.50,Desktop,Indianapolis,Desktop,0,USD,1345678456,Apparel,david@example.com
+32,Ella Hill,Female,29,Minnesota,Minneapolis,MN Branch,Current,TXN032,18-03-2025,20:00:00,70.50,MID032,POS,Restaurant,4900.75,Card,Minneapolis,Card,0,USD,1789012678,Dining,ella@example.com
+33,Benjamin Green,Male,45,Wisconsin,Milwaukee,MI Branch,Savings,TXN033,19-03-2025,09:30:00,3000.00,MID033,Online,Jewelry,14200.00,Mobile,Milwaukee,Mobile,1,USD,1567890678,Purchase,benjamin@example.com
+34,Scarlett Adams,Female,32,Missouri,St. Louis,ST Branch,Current,TXN034,19-03-2025,11:45:00,55.75,MID034,POS,Groceries,5300.40,Card,St. Louis,Card,0,USD,1890123890,Grocery,scarlett@example.com
+35,Henry Baker,Male,50,Colorado,Denver,DN Branch,Savings,TXN035,19-03-2025,13:20:00,210.00,MID035,Online,Furniture,11800.25,Desktop,Denver,Desktop,0,USD,1345678567,Home,henry@example.com
+36,Abigail Rivera,Female,27,Oklahoma,Oklahoma City,OK Branch,Current,TXN036,19-03-2025,15:10:00,45.00,MID036,POS,Pharmacy,3700.90,Card,Oklahoma City,Card,0,USD,1789012789,Medicine,abigail@example.com
+37,Alexander Cooper,Male,41,Kentucky,Louisville,LO Branch,Savings,TXN037,19-03-2025,17:45:00,1750.00,MID037,Online,Electronics,9600.50,Mobile,Louisville,Mobile,0,USD,1567890789,Purchase,alexander@example.com
+38,Elizabeth Ward,Female,34,Utah,Salt Lake City,SL Branch,Current,TXN038,19-03-2025,19:30:00,115.25,MID038,POS,Groceries,5500.25,Card,Salt Lake City,Card,0,USD,1890123901,Grocery,elizabeth@example.com
+39,Christopher Brooks,Male,48,Nevada,Las Vegas,LV Branch,Savings,TXN039,19-03-2025,21:15:00,3500.00,MID039,Online,Travel,15200.00,Desktop,Las Vegas,Desktop,1,USD,1345678678,Vacation,chris@example.com
+40,Sofia Reed,Female,31,New Mexico,Albuquerque,AL Branch,Current,TXN040,20-03-2025,08:45:00,65.50,MID040,POS,Restaurant,5100.60,Card,Albuquerque,Card,0,USD,1789012890,Dining,sofia@example.com
+41,Jack Bennett,Male,39,Iowa,Des Moines,DM Branch,Savings,TXN041,20-03-2025,10:30:00,130.00,MID041,Online,Entertainment,8900.40,Mobile,Des Moines,Mobile,0,USD,1567890890,Concert,jack@example.com
+42,Victoria Long,Female,28,Arkansas,Little Rock,LR Branch,Current,TXN042,20-03-2025,12:15:00,50.25,MID042,POS,Pharmacy,4200.90,Card,Little Rock,Card,0,USD,1890123012,Medicine,victoria@example.com
+43,Ryan Foster,Male,44,Louisiana,New Orleans,NO Branch,Savings,TXN043,20-03-2025,14:50:00,2200.00,MID043,Online,Electronics,12400.75,Desktop,New Orleans,Desktop,1,USD,1345678789,Purchase,ryan@example.com
+44,Chloe Sanders,Female,33,Kansas,Wichita,WI Branch,Current,TXN044,20-03-2025,16:30:00,95.00,MID044,POS,Groceries,5700.25,Card,Wichita,Card,0,USD,1789012901,Grocery,chloe@example.com
+45,Nathan Murphy,Male,47,Nebraska,Omaha,OM Branch,Savings,TXN045,20-03-2025,18:15:00,140.00,MID045,Online,Clothing,9400.50,Mobile,Omaha,Mobile,0,USD,1567890901,Apparel,nathan@example.com
+46,Zoe Price,Female,30,Mississippi,Jackson,JK Branch,Current,TXN046,20-03-2025,20:00:00,80.50,MID046,POS,Restaurant,5300.75,Card,Jackson,Card,0,USD,1890123123,Dining,zoe@example.com
+47,Caleb Bell,Male,52,Alabama,Birmingham,BI Branch,Savings,TXN047,21-03-2025,09:30:00,3200.00,MID047,Online,Jewelry,16200.00,Desktop,Birmingham,Desktop,1,USD,1345678890,Purchase,caleb@example.com
+48,Hannah Watson,Female,35,South Carolina,Columbia,CO Branch,Current,TXN048,21-03-2025,11:45:00,60.75,MID048,POS,Groceries,5900.40,Card,Columbia,Card,0,USD,1789013012,Grocery,hannah@example.com
+49,Luke Gray,Male,41,Connecticut,Hartford,HA Branch,Savings,TXN049,21-03-2025,13:20:00,230.00,MID049,Online,Furniture,12800.25,Mobile,Hartford,Mobile,0,USD,1567890012,Home,luke@example.com
+50,Lily Hughes,Female,29,Idaho,Boise,BO Branch,Current,TXN050,21-03-2025,15:10:00,55.00,MID050,POS,Pharmacy,4400.90,Card,Boise,Card,0,USD,1890123234,Medicine,lily@example.com

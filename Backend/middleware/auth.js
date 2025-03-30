@@ -8,23 +8,28 @@ const authenticate = async (req, res, next) => {
         return res.status(401).json({ error: 'Access denied. No token provided.' });
     }
 
-    const token = authHeader.split(' ')[1]; // Extract the token after "Bearer"
+    const token = authHeader.split(' ')[1];
 
     try {
-        // Check if the token is blacklisted
-        const blacklistedToken = await BlacklistedToken.findOne({ token });
+        // Check if token is blacklisted using Sequelize
+        const blacklistedToken = await BlacklistedToken.findOne({
+            where: { token }
+        });
         if (blacklistedToken) {
             return res.status(401).json({ error: 'Token is blacklisted. Please log in again.' });
         }
 
         // Verify the token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findById(decoded.id); // Fetch user from the database
+        
+        // Find user using Sequelize
+        const user = await User.findByPk(decoded.id);
         if (!user) {
             return res.status(404).json({ error: 'User not found.' });
         }
 
-        req.user = user; // Attach user info to the request
+        // Convert Sequelize model instance to plain object
+        req.user = user.get({ plain: true });
         next();
     } catch (error) {
         console.error('Token verification failed:', error.message);
