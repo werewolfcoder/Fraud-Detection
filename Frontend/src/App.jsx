@@ -9,6 +9,7 @@ import Accounts from "./pages/Accounts";
 import Transactions from "./pages/Transactions";
 import MakeTransaction from "./pages/MakeTransaction";
 import DepositMoney from "./pages/DepositMoney";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const PrivateRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
@@ -46,7 +47,8 @@ function App() {
             <Route path="/accounts" element={<Accounts />} />
         <Route path="/transactions" element={<Transactions />} />
         <Route path="/transfer" element={<MakeTransaction />} />
-        <Route path="/deposit" element={<DepositMoney />} />
+            <Route path="/deposit" element={<DepositMoney />} />
+            <Route path="/admin_dashboard" element={<AdminDashboard />} />
         </Routes>
     );
 }

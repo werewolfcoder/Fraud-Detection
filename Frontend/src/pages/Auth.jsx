@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext"; // Import AuthContext
-import { Mail, Lock, User } from "lucide-react";
+import { Calendar } from "lucide-react"; // Add Calendar here
+import { Mail, Lock, User, Phone } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -11,6 +12,9 @@ export default function AuthPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("user"); // Default role is "user"
+  const [age, setAge] = useState(""); // Add state for age
+  const [gender, setGender] = useState(""); // Add state for gender
+  const [contact, setContact] = useState(""); // Add state for contact
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(""); // For success or error messages
   const navigate = useNavigate();
@@ -55,7 +59,8 @@ export default function AuthPage() {
             username,
             email,
             password,
-            role,
+          role,
+          ...(role === "user" && { age, gender, contact }), // Include additional fields for "user"
         };
         console.log(newUser)
         try {
@@ -146,13 +151,61 @@ export default function AuthPage() {
               </select>
             </div>
           )}
+
+
+          {/* Additional fields for "User" role */}
+          {isRegister && role === "user" && (
+            <>
+              <div className="flex items-center border rounded-lg p-2">
+                <Calendar className="text-gray-500 mr-2" size={20} />
+                <input
+                  type="number"
+                  name="age"
+                  placeholder="Age"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  className="w-full outline-none"
+                  required
+                />
+              </div>
+              <div className="flex items-center border rounded-lg p-2">
+                <select
+                  name="gender"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                  className="w-full outline-none"
+                  required
+                >
+                  <option value="" disabled>
+                    Select Gender
+                  </option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div className="flex items-center border rounded-lg p-2">
+                <Phone className="text-gray-500 mr-2" size={20} />
+                <input
+                  type="tel"
+                  name="contact"
+                  placeholder="Contact Number"
+                  value={contact}
+                  onChange={(e) => setContact(e.target.value)}
+                  className="w-full outline-none"
+                  required
+                />
+              </div>
+            </>
+          )}
+
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition"
             disabled={loading}
           >
             {loading ? (isRegister ? "Signing Up..." : "Logging In...") : isRegister ? "Sign Up" : "Login"}
-          </button>
+          </button> 
         </form>
         {message && <p className="text-center mt-4 text-red-600">{message}</p>}
         <p className="text-center mt-4 text-gray-600">
