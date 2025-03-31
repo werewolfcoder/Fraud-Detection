@@ -6,7 +6,7 @@ const Transaction = sequelize.define('Transaction', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Users',
+            model: 'users', // Ensure the table name is lowercase
             key: 'id'
         }
     },
@@ -48,5 +48,12 @@ const Transaction = sequelize.define('Transaction', {
         }
     ]
 });
+
+Transaction.associate = (models) => {
+    Transaction.belongsTo(models.User, {
+        foreignKey: 'user_id',
+        as: 'user'
+    });
+};
 
 module.exports = Transaction;

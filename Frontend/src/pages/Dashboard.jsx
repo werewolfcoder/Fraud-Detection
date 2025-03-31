@@ -1,20 +1,71 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { CreditCard, Send, PlusCircle, FileText, Settings } from "lucide-react";
+import { CreditCard, Send, PlusCircle, User } from "lucide-react";
 import Navbar from "../components/navbar";
+import axios from "axios";
 
 export function Dashboard() {
-  const [balance, setBalance] = useState(25000); // Example balance
-  const recentTransactions = [
-    { id: 1, type: "Sent", amount: -500, date: "March 28, 2025" },
-    { id: 2, type: "Received", amount: 1200, date: "March 27, 2025" },
-    { id: 3, type: "Bill Payment", amount: -300, date: "March 26, 2025" },
-  ];
+  const [balance, setBalance] = useState(0); // Initialize balance as a number
+  const [transactions, setTransactions] = useState([]); // Initialize transactions
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(""); // Error state
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          throw new Error("No authentication token found");
+        }
+
+        console.log("Fetching dashboard data with token:", token); // Add debug log
+
+        const response = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/api/dashboard`,
+          {
+            headers: { 
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+          }
+        );
+
+        console.log("Dashboard response:", response.data); // Add debug log
+
+        if (!response.data || typeof response.data.account_balance === 'undefined') {
+          throw new Error("Invalid response format from server");
+        }
+
+        const accountBalance = parseFloat(response.data.account_balance) || 0;
+        setBalance(accountBalance);
+        setTransactions(response.data.transactions || []);
+        setError("");
+      } catch (err) {
+        console.error("Error fetching dashboard data:", err);
+        setError(
+          err.response?.data?.error || 
+          err.message || 
+          "Failed to load dashboard data. Please try again."
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="min-h-screen flex items-center justify-center text-red-500">{error}</div>;
+  }
 
   return (
-    
     <div className="min-h-screen bg-gray-100">
-      <Navbar></Navbar>
+      <Navbar />
       <div className="p-6 max-w-6xl mx-auto bg-white rounded-2xl shadow-lg mt-6">
         <h2 className="text-3xl font-bold text-gray-700 mb-6">Dashboard</h2>
 
@@ -22,30 +73,45 @@ export function Dashboard() {
         <div className="p-6 bg-blue-500 text-white rounded-xl flex justify-between items-center">
           <div>
             <h3 className="text-xl">Current Balance</h3>
-            <p className="text-3xl font-bold">${balance}</p>
+            <p className="text-3xl font-bold">₹{balance.toFixed(2)}</p>
           </div>
-          <Link to="/transactions" className="p-2 bg-white text-blue-600 rounded-lg font-bold hover:bg-gray-200">
+          <Link
+            to="/transactions"
+            className="p-2 bg-white text-blue-600 rounded-lg font-bold hover:bg-gray-200"
+          >
             View Transactions
           </Link>
         </div>
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mt-6">
-          <Link to="/accounts" className="p-6 bg-green-500 text-white rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-green-600 transition">
+          <Link
+            to="/accounts"
+            className="p-6 bg-green-500 text-white rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-green-600 transition"
+          >
             <CreditCard size={32} />
             <span>Accounts</span>
           </Link>
-          <Link to="/transfer" className="p-6 bg-yellow-500 text-white rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-yellow-600 transition">
+          <Link
+            to="/transfer"
+            className="p-6 bg-yellow-500 text-white rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-yellow-600 transition"
+          >
             <Send size={32} />
             <span>Send Money</span>
           </Link>
-          <Link to="/deposit" className="p-6 bg-blue-700 text-white rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-blue-800 transition">
+          <Link
+            to="/deposit"
+            className="p-6 bg-blue-700 text-white rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-blue-800 transition"
+          >
             <PlusCircle size={32} />
             <span>Deposit Money</span>
           </Link>
-          <Link to="/bill-payment" className="p-6 bg-red-500 text-white rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-red-600 transition">
-            <FileText size={32} />
-            <span>Bill Payments</span>
+          <Link
+            to="/profile"
+            className="p-6 bg-purple-500 text-white rounded-xl flex flex-col items-center justify-center gap-2 hover:bg-purple-600 transition"
+          >
+            <User size={32} />
+            <span>Profile</span>
           </Link>
         </div>
 
@@ -53,11 +119,22 @@ export function Dashboard() {
         <div className="mt-8">
           <h3 className="text-xl font-bold text-gray-700 mb-4">Recent Transactions</h3>
           <ul className="bg-gray-50 p-4 rounded-lg shadow">
-            {recentTransactions.map((txn) => (
-              <li key={txn.id} className="flex justify-between py-2 border-b last:border-none">
-                <span>{txn.type}</span>
-                <span className={txn.amount < 0 ? "text-red-500" : "text-green-500"}>${txn.amount}</span>
-                <span className="text-gray-500">{txn.date}</span>
+            {transactions.map((txn) => (
+              <li
+                key={txn.id}
+                className="flex justify-between py-2 border-b last:border-none"
+              >
+                <span>{txn.merchant}</span>
+                <span
+                  className={
+                    parseFloat(txn.amount) < 0 ? "text-red-500" : "text-green-500"
+                  }
+                >
+                  ${parseFloat(txn.amount || 0).toFixed(2)}
+                </span>
+                <span className="text-gray-500">
+                  {new Date(txn.transaction_date).toLocaleDateString()}
+                </span>
               </li>
             ))}
           </ul>
@@ -66,4 +143,5 @@ export function Dashboard() {
     </div>
   );
 }
+
 export default Dashboard;

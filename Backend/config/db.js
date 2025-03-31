@@ -31,8 +31,18 @@ const connectDB = async () => {
         }
         
         await sequelize.authenticate();
-        // Force should be false in production
-        await sequelize.sync({ alter: true });
+
+        // Initialize model associations
+        const User = require('../models/User');
+        const Transaction = require('../models/Transaction');
+        
+        User.associate({ Transaction });
+        Transaction.associate({ User });
+
+        // Sync database without overriding tables in production
+        const isDevelopment = process.env.NODE_ENV === 'development';
+        await sequelize.sync({ force: isDevelopment }); // Use force only in development
+
         console.log('PostgreSQL connected successfully');
     } catch (error) {
         console.error('Database connection error:', error.message);

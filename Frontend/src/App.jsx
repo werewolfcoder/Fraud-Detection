@@ -9,44 +9,114 @@ import Accounts from "./pages/Accounts";
 import Transactions from "./pages/Transactions";
 import MakeTransaction from "./pages/MakeTransaction";
 import DepositMoney from "./pages/DepositMoney";
+import AdminDashboard from "./pages/AdminDashboard";
+import Settings from "./pages/Settings";
 
-const PrivateRoute = ({ children }) => {
+const PrivateRoute = ({ children, allowedRoles }) => {
     const { user } = useContext(AuthContext);
 
-    // If the user is not logged in, redirect to the login page
-    return user ? children : <Navigate to="/auth" />;
+    if (!user) {
+        return <Navigate to="/auth" />;
+    }
+
+    if (allowedRoles && !allowedRoles.includes(user.role)) {
+        return <Navigate to="/" />;
+    }
+
+    return children;
 };
 
 function App() {
+    const { user } = useContext(AuthContext);
+
+    // Redirect admins to admin dashboard if they try to access user routes
+    if (user?.role === 'admin' && window.location.pathname !== '/admin_dashboard' && window.location.pathname !== '/auth') {
+        return <Navigate to="/admin_dashboard" />;
+    }
+
     return (
         <Routes>
             {/* Public Routes */}
-            <Route path="/auth" element={<AuthPage />} />
+            <Route 
+                path="/auth" 
+                element={user ? <Navigate to={user.role === 'admin' ? '/admin_dashboard' : '/'} /> : <AuthPage />}
+            />
 
-            {/* Protected Routes */}
+            {/* Admin Routes */}
+            <Route
+                path="/admin_dashboard"
+                element={
+                    <PrivateRoute allowedRoles={['admin']}>
+                        <AdminDashboard />
+                    </PrivateRoute>
+                }
+            />
+
+            {/* User Routes - Not accessible to admins */}
             <Route
                 path="/"
                 element={
-                    <PrivateRoute>
+                    <PrivateRoute allowedRoles={['user']}>
                         <Dashboard />
                     </PrivateRoute>
                 }
             />
+            
             <Route
                 path="/profile"
                 element={
-                    <PrivateRoute>
+                    <PrivateRoute allowedRoles={['user', 'admin']}>
                         <Profile />
                     </PrivateRoute>
                 }
             />
 
-            {/* Fallback Route */}
-            <Route path="*" element={<Navigate to="/" />} />
-            <Route path="/accounts" element={<Accounts />} />
-        <Route path="/transactions" element={<Transactions />} />
-        <Route path="/transfer" element={<MakeTransaction />} />
-        <Route path="/deposit" element={<DepositMoney />} />
+            {/* Other protected routes - Only for users */}
+            <Route
+                path="/accounts"
+                element={
+                    <PrivateRoute allowedRoles={['user']}>
+                        <Accounts />
+                    </PrivateRoute>
+                }
+            />
+            <Route
+                path="/transactions"
+                element={
+                    <PrivateRoute allowedRoles={['user']}>
+                        <Transactions />
+                    </PrivateRoute>
+                }
+            />
+            <Route
+                path="/transfer"
+                element={
+                    <PrivateRoute allowedRoles={['user']}>
+                        <MakeTransaction />
+                    </PrivateRoute>
+                }
+            />
+            <Route
+                path="/deposit"
+                element={
+                    <PrivateRoute allowedRoles={['user']}>
+                        <DepositMoney />
+                    </PrivateRoute>
+                }
+            />
+            <Route
+                path="/settings"
+                element={
+                    <PrivateRoute allowedRoles={['user', 'admin']}>
+                        <Settings />
+                    </PrivateRoute>
+                }
+            />
+
+            {/* Fallback Route - Redirect admins to admin dashboard, users to home */}
+            <Route path="*" element={
+                <Navigate to={user?.role === 'admin' ? '/admin_dashboard' : '/'} />
+            } />
         </Routes>
     );
 }

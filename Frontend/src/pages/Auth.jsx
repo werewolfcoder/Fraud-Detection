@@ -11,65 +11,87 @@ export default function AuthPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("user"); // Default role is "user"
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+  const [contact, setContact] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(""); // For success or error messages
   const navigate = useNavigate();
 
-  const {user,setUser} = useContext(AuthContext); // Get user data from context
+  const { user, setUser, login } = useContext(AuthContext); // Add login from context
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage(""); // Clear previous messages
+    setMessage(""); 
 
     if (!isRegister) {
-        // Login logic
-        try {
-            const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, {
-                email,
-                password,
-            });
-
-            if (response.status === 200) {
-                const { user: userData, token } = response.data;
-                setUser(userData);
-                localStorage.setItem("token", token);
-                navigate("/"); // Redirect to dashboard
-            }
-        } catch (error) {
-            console.error("Login failed:", error);
-            setMessage("Invalid email or password. Please try again.");
-        } finally {
-            setLoading(false);
-        }
+      // Login logic
+      try {
+        await login({ email, password });
+      } catch (error) {
+        console.error("Login failed:", error);
+        setMessage("Invalid email or password. Please try again.");
+      } finally {
+        setLoading(false);
+      }
     } else {
-        // Registration logic
+      try {
+        // Registration validation
         if (password !== confirmPassword) {
-            setMessage("Passwords do not match.");
-            setLoading(false);
-            return;
+          setMessage("Passwords do not match.");
+          setLoading(false);
+          return;
+        }
+
+        if (role === "user" && (!age || age < 18 || age > 120)) {
+          setMessage("Please enter a valid age between 18 and 120.");
+          setLoading(false);
+          return;
         }
 
         const newUser = {
-            username,
-            email,
-            password,
-            role,
+          username: username.trim(),
+          email: email.trim(),
+          password,
+          role,
+          ...(role === "user" && {
+            age: parseInt(age),
+            gender,
+            contact: contact ? contact.trim() : null,
+          }),
         };
-        console.log(newUser)
-        try {
-            const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/register`, newUser);
-            if (response.status === 201) {
-                setMessage("Registration successful! You can now log in.");
-                setIsRegister(false); // Switch to login form
-            }
-        } catch (error) {
-            console.error("Registration failed:", error);
-            setMessage(error.response?.data?.error|| "Registration failed. Please try again.");
-        } finally {
-            setLoading(false);
+
+        console.log("Sending registration data:", { ...newUser, password: '[REDACTED]' });
+
+        const response = await axios.post(
+          `${import.meta.env.VITE_BASE_URL}/auth/register`,
+          newUser
+        );
+
+        if (response.status === 201) {
+          setMessage("Registration successful! You can now log in.");
+          setIsRegister(false);
+          // Clear form
+          setUsername("");
+          setEmail("");
+          setPassword("");
+          setConfirmPassword("");
+          setAge("");
+          setGender("");
+          setContact("");
         }
+      } catch (error) {
+        console.error("Registration error:", error);
+        const errorMessage = error.response?.data?.error || 
+                           error.response?.data?.message ||
+                           error.message || 
+                           "Registration failed. Please try again.";
+        setMessage(errorMessage);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -146,12 +168,58 @@ export default function AuthPage() {
               </select>
             </div>
           )}
+          {isRegister && role === "user" && (
+            <>
+              <div className="flex items-center border rounded-lg p-2">
+                <input
+                  type="number"
+                  name="age"
+                  placeholder="Age"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  className="w-full outline-none"
+                  required
+                />
+              </div>
+              <div className="flex items-center border rounded-lg p-2">
+                <select
+                  name="gender"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                  className="w-full outline-none"
+                  required
+                >
+                  <option value="">Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div className="flex items-center border rounded-lg p-2">
+                <input
+                  type="text"
+                  name="contact"
+                  placeholder="Contact Number"
+                  value={contact}
+                  onChange={(e) => setContact(e.target.value)}
+                  className="w-full outline-none"
+                  required
+                />
+              </div>
+            </>
+          )}
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition"
             disabled={loading}
           >
-            {loading ? (isRegister ? "Signing Up..." : "Logging In...") : isRegister ? "Sign Up" : "Login"}
+            {loading
+              ? isRegister
+                ? "Signing Up..."
+                : "Logging In..."
+              : isRegister
+              ? "Sign Up"
+              : "Login"}
           </button>
         </form>
         {message && <p className="text-center mt-4 text-red-600">{message}</p>}

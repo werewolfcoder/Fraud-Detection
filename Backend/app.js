@@ -20,14 +20,24 @@ app.use(bodyParser.json());
 
 // Enable CORS
 app.use(cors({
-    origin: 'http://localhost:5173', // Replace with your frontend URL
+    origin: ['http://localhost:5173', 'http://localhost:3000'], // Add both ports
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));
 
 // Routes
-app.use('/api', userRoutes);
+app.use('/api', userRoutes);  // This ensures all routes in userRoutes are under /api
 app.use('/auth', authRoutes);
+
+// Add error handling
+app.use((req, res, next) => {
+    res.status(404).json({ error: "Not Found" });
+});
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: "Internal Server Error" });
+});
 
 app.get('/', (req, res) => {
     res.send('Welcome to the HackNuThon API!');

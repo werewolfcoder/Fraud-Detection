@@ -8,28 +8,84 @@ const { authenticate } = require('../middleware/auth');
 // Register a new user
 router.post('/register', async (req, res) => {
     try {
-        const { username, email, password, role } = req.body;
+        const { username, email, password, role, age, gender, contact } = req.body;
         
-        // Check if the email already exists
+        // Input validation
+        const validationErrors = {};
+        if (!username || username.trim().length === 0) {
+            validationErrors.username = 'Username is required';
+        }
+        if (!email || email.trim().length === 0) {
+            validationErrors.email = 'Email is required';
+        }
+        if (!password || password.length < 6) {
+            validationErrors.password = 'Password must be at least 6 characters long';
+        }
+
+        if (Object.keys(validationErrors).length > 0) {
+            return res.status(400).json({ 
+                error: 'Validation error',
+                details: validationErrors
+            });
+        }
+
+        // Clean input data
+        const cleanData = {
+            username: username.trim(),
+            email: email.trim().toLowerCase(),
+            password,
+            role: role || 'user',
+            account_balance: 1000.00,
+            ...(role === 'user' ? { 
+                age: age ? parseInt(age) : null,
+                gender: gender || null,
+                contact: contact ? contact.trim() : null
+            } : {})
+        };
+
+        // Check for existing user
         const existingUser = await User.findOne({ 
-            where: { email }
+            where: { email: cleanData.email }
         });
+        
         if (existingUser) {
             return res.status(400).json({ error: 'Email already exists' });
         }
 
-        // Create a new user
-        const user = await User.create({ 
-            username, 
-            email, 
-            password, 
-            role 
+        console.log('Creating user:', {
+            ...cleanData,
+            password: '[REDACTED]'
         });
 
-        res.status(201).json({ message: 'User registered successfully' });
+        const user = await User.create(cleanData);
+
+        res.status(201).json({ 
+            message: 'User registered successfully',
+            user: {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                role: user.role,
+                account_balance: user.account_balance
+            }
+        });
     } catch (error) {
-        console.error('Error during registration:', error.message);
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('Registration error:', error);
+        
+        if (error.name === 'SequelizeValidationError') {
+            return res.status(400).json({
+                error: 'Validation error',
+                details: error.errors.map(e => ({
+                    field: e.path,
+                    message: e.message
+                }))
+            });
+        }
+
+        res.status(500).json({ 
+            error: 'Registration failed',
+            message: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
+        });
     }
 });
 
@@ -71,7 +127,8 @@ router.post('/login', async (req, res) => {
             user: { 
                 username: user.username, 
                 email: user.email, 
-                role: user.role 
+                role: user.role,
+                account_balance: user.account_balance
             } 
         });
     } catch (error) {
@@ -98,7 +155,13 @@ router.post('/logout', authenticate, async (req, res) => {
 
 // Get the authenticated user's profile
 router.get('/profile', authenticate, (req, res) => {
-    res.status(200).json({ user: req.user });
+    const { password, ...userWithoutPassword } = req.user;
+    res.status(200).json({ 
+        user: {
+            ...userWithoutPassword,
+            account_balance: req.user.account_balance
+        } 
+    });
 });
 
 module.exports = router;

@@ -40,7 +40,8 @@ export const AuthProvider = ({ children }) => {
             const { token, user: userData } = response.data;
             localStorage.setItem("token", token);
             setUser(userData);
-            navigate("/");
+            // Redirect based on role
+            navigate(userData.role === 'admin' ? '/admin_dashboard' : '/');
         } catch (error) {
             console.error("Login failed:", error);
             throw error;
@@ -72,11 +73,8 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user,setUser, login, logout }}>
+        <AuthContext.Provider value={{ user, setUser, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
 };
-
-
-

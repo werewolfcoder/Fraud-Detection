@@ -28,8 +28,12 @@ const authenticate = async (req, res, next) => {
             return res.status(404).json({ error: 'User not found.' });
         }
 
-        // Convert Sequelize model instance to plain object
-        req.user = user.get({ plain: true });
+        // Set user data in request
+        req.user = {
+            id: user.id,  // Ensure ID is explicitly set
+            ...user.get({ plain: true })
+        };
+        
         next();
     } catch (error) {
         console.error('Token verification failed:', error.message);
