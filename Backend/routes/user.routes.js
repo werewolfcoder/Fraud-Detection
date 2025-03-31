@@ -1,16 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const Transaction = require('../models/Transaction');
+const Transaction = require('../models/Transaction'); // Fix this import
 const User = require('../models/User');
 const { authenticate, authorizeAdmin } = require('../middleware/auth'); // Import middleware
 const { spawn } = require('child_process');
-const sequelize = require('sequelize');
 const { Op } = require('sequelize');
+const { detectFraud } = require('../services/fraudDetection'); // Fix import
+const { getTransactionStats } = require('../controllers/adminController');
 
 // Submit a transaction (only for logged-in users)
 router.post("/transaction", authenticate, async (req, res) => {
     try {
         const { amount, transactionType, state, city, bankBranch, recipient, merchantID } = req.body;
+        const io = req.app.get('io');
+        const adminSockets = req.app.get('adminSockets');
 
         // Get current user
         const user = await User.findByPk(req.user.id);
@@ -18,47 +21,78 @@ router.post("/transaction", authenticate, async (req, res) => {
             return res.status(404).json({ error: "User not found" });
         }
 
-        // Check if user has sufficient balance
         if (user.account_balance < parseFloat(amount)) {
             return res.status(400).json({ error: "Insufficient balance" });
         }
 
-        // Update user's balance
-        await user.update({
-            account_balance: user.account_balance - parseFloat(amount)
+        // Prepare transaction data for fraud detection
+        const txData = {
+            user_id: user.id,
+            transaction_amount: parseFloat(amount),
+            merchant_category: transactionType === "Bank Transfer" ? "Transfer" : "Payment",
+            transaction_type: transactionType === "Bank Transfer" ? "Bank Transfer" : "Online",
+            transaction_location: `${city.trim()}, ${state.trim()}`,
+            account_balance: user.account_balance,
+            transaction_time: new Date()
+        };
+
+        // Run fraud detection
+        const fraudResult = await detectFraud(txData);
+        console.log('Fraud detection result:', fraudResult);
+
+        // Create transaction record with fraud detection results
+        const transaction = await Transaction.create({
+            ...txData,
+            merchant: transactionType === "Bank Transfer" ? 
+                     `Transfer to ${recipient}` : 
+                     `Payment to ${merchantID}`,
+            is_fraud: fraudResult.isFraud,
+            fraud_score: fraudResult.fraudScore
         });
 
-        // Create transaction record
-        let merchant = null;
-        if (transactionType === "Bank Transfer") {
-            if (!recipient) {
-                return res.status(400).json({ error: "Recipient information is required for Bank Transfer" });
-            }
-            merchant = `Transfer to ${recipient}`;
-        } else if (transactionType === "Merchant Payment") {
-            if (!merchantID) {
-                return res.status(400).json({ error: "Merchant ID is required for Merchant Payment" });
-            }
-            merchant = `Payment to ${merchantID}`;
+        // If fraud detected, notify admins
+        if (fraudResult.isFraud) {
+            const notificationData = {
+                type: 'fraud_alert',
+                transaction: {
+                    id: transaction.id,
+                    amount: transaction.transaction_amount,
+                    type: transaction.transaction_type,
+                    location: transaction.transaction_location,
+                    merchant: transaction.merchant,
+                    fraud_score: fraudResult.fraudScore,
+                    user: {
+                        id: user.id,
+                        username: user.username,
+                        email: user.email
+                    },
+                    timestamp: transaction.transaction_time
+                }
+            };
+
+            // Emit to all admin sockets
+            adminSockets.forEach(socket => {
+                socket.emit('fraud_alert', notificationData);
+            });
         }
 
-        const location = `${city.trim()}, ${state.trim()}`;
+        // Update balance only if not fraud
+        if (!fraudResult.isFraud) {
+            await user.update({
+                account_balance: user.account_balance - parseFloat(amount)
+            });
+        }
 
-        const transaction = await Transaction.create({
-            user_id: req.user.id,
-            amount: parseFloat(amount),
-            merchant,
-            location,
-            transaction_date: new Date(),
-            is_fraud: false,
-            fraud_score: 0.0,
-        });
-
-        res.status(201).json({ 
-            message: "Transaction created successfully", 
+        res.status(201).json({
+            message: fraudResult.isFraud ? "Transaction flagged as fraudulent" : "Transaction processed successfully",
             data: transaction,
-            newBalance: user.account_balance
+            newBalance: user.account_balance,
+            fraud_detection: {
+                is_fraud: fraudResult.isFraud,
+                fraud_score: fraudResult.fraudScore
+            }
         });
+
     } catch (error) {
         console.error("Transaction error:", error);
         res.status(500).json({ error: "Transaction failed", details: error.message });
@@ -73,35 +107,60 @@ router.post("/deposit", authenticate, async (req, res) => {
             return res.status(400).json({ error: "Please provide a valid amount" });
         }
 
-        // Get current user
         const user = await User.findByPk(req.user.id);
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
 
         const parsedAmount = parseFloat(amount);
+        const currentBalance = parseFloat(user.account_balance);
 
-        // Update user's balance
-        await user.update({
-            account_balance: parseFloat(user.account_balance) + parsedAmount
-        });
+        // Prepare deposit data for fraud detection
+        const txData = {
+            user_id: user.id,
+            transaction_amount: parsedAmount,
+            merchant_category: "Deposit",
+            transaction_type: "Cash Deposit",
+            transaction_location: "Bank Branch",
+            account_balance: currentBalance,
+            transaction_time: new Date()
+        };
+
+        // Run fraud detection
+        const fraudResult = await detectFraud(txData);
+        console.log('Deposit fraud detection result:', fraudResult);
+
+        // Calculate new balance first
+        const newBalance = currentBalance + parsedAmount;
 
         // Create transaction record
         const transaction = await Transaction.create({
-            user_id: req.user.id,
-            amount: parsedAmount,
-            merchant: "Cash Deposit",
-            location: "Self Deposit",
-            transaction_date: new Date(),
-            is_fraud: false,
-            fraud_score: 0.0,
+            ...txData,
+            merchant: "Self Deposit",
+            is_fraud: fraudResult.isFraud,
+            fraud_score: fraudResult.fraudScore,
+            account_balance: newBalance // Set the new balance in transaction
         });
 
-        res.status(201).json({ 
-            message: "Deposit successful", 
+        // If not fraud, update user's balance
+        if (!fraudResult.isFraud) {
+            await user.update({
+                account_balance: newBalance
+            });
+            await user.reload(); // Reload user to get updated balance
+        }
+
+        // Send response with updated data
+        res.status(201).json({
+            message: fraudResult.isFraud ? "Deposit flagged as suspicious" : "Deposit successful",
             data: transaction,
-            newBalance: user.account_balance
+            newBalance: user.account_balance,
+            fraud_detection: {
+                is_fraud: fraudResult.isFraud,
+                fraud_score: fraudResult.fraudScore
+            }
         });
+
     } catch (error) {
         console.error("Deposit error:", error);
         res.status(500).json({ error: "Deposit failed", details: error.message });
@@ -119,32 +178,61 @@ router.get("/fraud-transactions", authenticate, authorizeAdmin, async (req, res)
     }
 });
 
-// Dashboard route to fetch account balance and recent transactions
+// Helper function for formatting transactions
+const formatTransaction = (tx) => {
+    const data = tx.get({ plain: true });
+    return {
+        id: data.id,
+        transaction_amount: Number(data.transaction_amount || 0).toFixed(2),
+        account_balance: Number(data.account_balance || 0).toFixed(2),
+        transaction_time: new Date(data.transaction_time).toISOString(),
+        merchant_category: data.merchant_category || 'Uncategorized',
+        transaction_type: data.transaction_type || 'Unknown',
+        transaction_location: data.transaction_location || 'Unknown Location',
+        merchant: data.merchant || 'Unknown Merchant'
+    };
+};
+
+// Dashboard route
 router.get("/dashboard", authenticate, async (req, res) => {
     try {
-        // Fetch complete user data from database
         const user = await User.findByPk(req.user.id);
-
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
 
-        // Fetch recent transactions for the user
         const transactions = await Transaction.findAll({
             where: { user_id: user.id },
-            order: [["transaction_date", "DESC"]],
+            order: [["transaction_time", "DESC"]],
             limit: 10,
-            attributes: ['id', 'amount', 'merchant', 'transaction_date', 'location']
+            raw: false
         });
 
-        // Send response
         res.status(200).json({
-            account_balance: user.account_balance,
-            transactions: transactions.map(t => t.toJSON())
+            account_balance: Number(user.account_balance || 0).toFixed(2),
+            transactions: transactions.map(formatTransaction)
         });
     } catch (error) {
-        console.error("Error fetching dashboard data:", error.message);
+        console.error("Error fetching dashboard data:", error);
         res.status(500).json({ error: "Failed to fetch dashboard data" });
+    }
+});
+
+// Transactions route
+router.get("/transactions", authenticate, async (req, res) => {
+    try {
+        const transactions = await Transaction.findAll({
+            where: { user_id: req.user.id },
+            order: [["transaction_time", "DESC"]],
+            raw: false
+        });
+
+        res.status(200).json({
+            transactions: transactions.map(formatTransaction)
+        });
+    } catch (error) {
+        console.error("Error fetching transactions:", error);
+        res.status(500).json({ error: "Failed to fetch transactions" });
     }
 });
 
@@ -317,6 +405,22 @@ router.get("/admin/analytics", authenticate, authorizeAdmin, async (req, res) =>
             error: "Failed to fetch analytics",
             details: error.message
         });
+    }
+});
+
+// Add this new route for model testing
+router.get("/test-model", authenticate, authorizeAdmin, async (req, res) => {
+    const { testModel } = require('../controllers/transactionController');
+    await testModel(req, res);
+});
+
+// Update the route to use an async handler
+router.get("/admin/stats", authenticate, authorizeAdmin, async (req, res) => {
+    try {
+        await getTransactionStats(req, res);
+    } catch (error) {
+        console.error("Admin stats error:", error);
+        res.status(500).json({ error: "Failed to fetch analytics" });
     }
 });
 

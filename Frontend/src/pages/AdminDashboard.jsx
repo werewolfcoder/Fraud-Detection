@@ -1,151 +1,198 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import axios from "axios";
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    BarElement,
+    ArcElement,
+    Title,
+    Tooltip,
+    Legend
+} from 'chart.js';
+import { Line, Bar, Pie } from 'react-chartjs-2';
 
-const AdminDashboard = () => {
-  const { logout } = useContext(AuthContext);
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    BarElement,
+    ArcElement,
+    Title,
+    Tooltip,
+    Legend
+);
 
-  return (
-    <div className="p-6 bg-gradient-to-br from-sky-300 to-cyan-950 min-h-screen">
-      {/* Add Navigation Bar with Logout */}
-      <nav className="bg-gray-800 text-white p-4 flex justify-between items-center mb-6 rounded-lg">
-        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-        <button
-          onClick={logout}
-          className="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg transition"
-        >
-          Logout
-        </button>
-      </nav>
+export default function AdminDashboard() {
+    const { logout } = useContext(AuthContext);
+    const [stats, setStats] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-      <h1 className="text-4xl font-bold text-gray-800 mb-6">Admin Dashboard</h1>
+    useEffect(() => {
+        fetchStats();
+    }, []);
 
-      {/* Alerts & Notifications Section */}
-      <div className="relative bg-orange-100 shadow-lg rounded-xl p-6 mb-8">
-        <h2 className="text-2xl font-semibold text-orange-700 mb-4">Alerts & Notifications</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-white rounded-lg p-4 shadow-md">
-            <h3 className="text-lg font-medium text-gray-700">Fraud Alerts</h3>
-            <ul className="mt-2 space-y-2">
-              <li className="p-3 bg-orange-50 rounded-lg">
-                <p className="font-semibold text-gray-800">High-Risk Transaction Detected</p>
-                <p className="text-sm text-orange-600">Transaction #12345</p>
-              </li>
-            </ul>
-          </div>
-          <div className="bg-white rounded-lg p-4 shadow-md">
-            <h3 className="text-lg font-medium text-gray-700">Large Withdrawal Alerts</h3>
-            <ul className="mt-2 space-y-2">
-              <li className="p-3 bg-yellow-50 rounded-lg">
-                <p className="font-semibold text-gray-800">Large Withdrawal Detected</p>
-                <p className="text-sm text-yellow-600">Amount: $50,000</p>
-              </li>
-            </ul>
-          </div>
+    const fetchStats = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await axios.get(
+                `${import.meta.env.VITE_BASE_URL}/api/admin/stats`,
+                {
+                    headers: { Authorization: `Bearer ${token}` }
+                }
+            );
+            setStats(response.data);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) return <div>Loading analytics...</div>;
+    if (error) return <div>Error: {error}</div>;
+    if (!stats) return null;
+
+    // Chart configurations
+    const dailyTransactionsConfig = {
+        data: {
+            labels: stats.dailyStats.map(d => d.date),
+            datasets: [{
+                label: 'Transaction Count',
+                data: stats.dailyStats.map(d => d.count),
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: { display: true, text: 'Daily Transaction Volume' }
+            }
+        }
+    };
+
+    return (
+        <div className="p-6 bg-gray-100 min-h-screen">
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-3xl font-bold text-gray-700">Admin Dashboard</h1>
+                <button
+                    onClick={logout}
+                    className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
+                >
+                    Logout
+                </button>
+            </div>
+
+            {/* Summary Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <SummaryCard
+                    title="Total Transactions"
+                    value={stats.summary.totalTransactions}
+                    color="blue"
+                />
+                <SummaryCard
+                    title="Total Users"
+                    value={stats.summary.totalUsers}
+                    color="green"
+                />
+                <SummaryCard
+                    title="Fraud Detected"
+                    value={stats.summary.totalFraudulent}
+                    color="red"
+                />
+                <SummaryCard
+                    title="Total Volume"
+                    value={`₹${stats.summary.totalVolume.toFixed(2)}`}
+                    color="purple"
+                />
+            </div>
+
+            {/* Charts Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Daily Transactions Chart */}
+                <div className="bg-white p-4 rounded-lg shadow">
+                    <Line {...dailyTransactionsConfig} />
+                </div>
+
+                {/* Category Distribution */}
+                <div className="bg-white p-4 rounded-lg shadow">
+                    <Pie data={{
+                        labels: stats.categoryStats.map(c => c.merchant_category),
+                        datasets: [{
+                            data: stats.categoryStats.map(c => c.count),
+                            backgroundColor: [
+                                '#FF6384',
+                                '#36A2EB',
+                                '#FFCE56',
+                                '#4BC0C0',
+                                '#9966FF'
+                            ]
+                        }]
+                    }} />
+                </div>
+
+                {/* Hourly Volume */}
+                <div className="bg-white p-4 rounded-lg shadow">
+                    <Bar data={{
+                        labels: stats.volumeStats.map(v => `${v.hour}:00`),
+                        datasets: [{
+                            label: 'Transactions per Hour',
+                            data: stats.volumeStats.map(v => v.count),
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)'
+                        }]
+                    }} />
+                </div>
+
+                {/* Location Analysis */}
+                <div className="bg-white p-4 rounded-lg shadow">
+                    <Bar data={{
+                        labels: stats.locationStats.map(l => l.transaction_location),
+                        datasets: [{
+                            label: 'Transaction Count',
+                            data: stats.locationStats.map(l => l.count),
+                            backgroundColor: 'rgba(153, 102, 255, 0.5)'
+                        }]
+                    }} />
+                </div>
+            </div>
+
+            {/* User Patterns Table */}
+            <div className="mt-6 bg-white rounded-lg shadow p-4">
+                <h3 className="text-xl font-bold mb-4">Top Users by Transaction Volume</h3>
+                <div className="overflow-x-auto">
+                    <table className="min-w-full">
+                        <thead>
+                            <tr>
+                                <th className="px-4 py-2">Username</th>
+                                <th className="px-4 py-2">Transaction Count</th>
+                                <th className="px-4 py-2">Total Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {stats.userStats.map(user => (
+                                <tr key={user.id}>
+                                    <td className="px-4 py-2">{user.username}</td>
+                                    <td className="px-4 py-2">{user.transaction_count}</td>
+                                    <td className="px-4 py-2">₹{parseFloat(user.total_amount).toFixed(2)}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-      </div>
+    );
+}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Fraud Detection & Monitoring Section */}
-        <div className="relative bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg p-6 shadow-lg">
-          <h2 className="text-2xl font-semibold text-blue-700 mb-4">Fraud Detection & Monitoring</h2>
-          <h3 className="text-lg font-medium text-gray-700">Fraud Alerts Panel</h3>
-          <ul className="mt-2 space-y-2">
-            <li className="p-3 bg-red-50 rounded-lg">
-              <p className="font-semibold text-gray-800">Transaction #12345</p>
-              <p className="text-sm text-red-600">High Risk</p>
-            </li>
-            <li className="p-3 bg-yellow-50 rounded-lg">
-              <p className="font-semibold text-gray-800">Transaction #67890</p>
-              <p className="text-sm text-yellow-600">Medium Risk</p>
-            </li>
-          </ul>
-          <div className="border-t mt-4 pt-4">
-            <h3 className="text-lg font-medium text-gray-700">Fraud Risk Score</h3>
-            <ul className="mt-2 space-y-2">
-              <li className="p-3 bg-red-50 rounded-lg">
-                <p className="font-semibold text-gray-800">Transaction #12345</p>
-                <p className="text-sm text-red-600">Score: High</p>
-              </li>
-              <li className="p-3 bg-yellow-50 rounded-lg">
-                <p className="font-semibold text-gray-800">Transaction #67890</p>
-                <p className="text-sm text-yellow-600">Score: Medium</p>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Customer & Account Management */}
-        <div className="relative bg-gradient-to-r from-green-100 to-green-200 rounded-lg p-6 shadow-lg">
-          <h2 className="text-2xl font-semibold text-green-700 mb-4">Customer & Account Management</h2>
-          <h3 className="text-lg font-medium text-gray-700">User List & Status</h3>
-          <ul className="mt-2 space-y-2">
-            <li className="p-3 bg-green-50 rounded-lg">
-              <p className="font-semibold text-gray-800">John Doe</p>
-              <p className="text-sm text-green-600">Status: Active</p>
-            </li>
-            <li className="p-3 bg-red-50 rounded-lg">
-              <p className="font-semibold text-gray-800">Jane Smith</p>
-              <p className="text-sm text-red-600">Status: Suspended</p>
-            </li>
-          </ul>
-          <div className="border-t mt-4 pt-4">
-            <h3 className="text-lg font-medium text-gray-700">Customer Risk Score</h3>
-            <ul className="mt-2 space-y-2">
-              <li className="p-3 bg-green-50 rounded-lg">
-                <p className="font-semibold text-gray-800">John Doe</p>
-                <p className="text-sm text-green-600">Risk Score: Low</p>
-              </li>
-              <li className="p-3 bg-red-50 rounded-lg">
-                <p className="font-semibold text-gray-800">Jane Smith</p>
-                <p className="text-sm text-red-600">Risk Score: High</p>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Financial Insights & Reports */}
-        <div className="relative bg-gradient-to-r from-purple-100 to-purple-200 rounded-lg p-6 shadow-lg">
-          <h2 className="text-2xl font-semibold text-purple-700 mb-4">Financial Insights & Reports</h2>
-          <h3 className="text-lg font-medium text-gray-700">Daily/Monthly Revenue Report</h3>
-          <p className="mt-2 text-gray-800">Revenue: <span className="font-semibold">$10,000</span> (Today)</p>
-          <p className="text-gray-800">Revenue: <span className="font-semibold">$300,000</span> (This Month)</p>
-          <div className="border-t mt-4 pt-4">
-            <h3 className="text-lg font-medium text-gray-700">Most Active Users & Merchants</h3>
-            <ul className="mt-2 space-y-2">
-              <li className="p-3 bg-purple-50 rounded-lg">
-                <p className="font-semibold text-gray-800">User: John Doe</p>
-                <p className="text-sm text-purple-600">100 Transactions</p>
-              </li>
-              <li className="p-3 bg-purple-50 rounded-lg">
-                <p className="font-semibold text-gray-800">Merchant: ABC Store</p>
-                <p className="text-sm text-purple-600">500 Transactions</p>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Security & Compliance */}
-        <div className="relative bg-gradient-to-r from-gray-100 to-gray-200 rounded-lg p-6 shadow-lg">
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">Security & Compliance</h2>
-          <h3 className="text-lg font-medium text-gray-700">System Logs & Activity Monitoring</h3>
-          <ul className="mt-2 space-y-2">
-            <li className="p-3 bg-gray-50 rounded-lg">
-              <p className="font-semibold text-gray-800">Admin Login</p>
-              <p className="text-sm text-gray-600">Timestamp: 2025-03-30 10:00 AM</p>
-            </li>
-            <li className="p-3 bg-gray-50 rounded-lg">
-              <p className="font-semibold text-gray-800">Permission Change</p>
-              <p className="text-sm text-gray-600">Timestamp: 2025-03-30 11:00 AM</p>
-            </li>
-          </ul>
-          <div className="border-t mt-4 pt-4">
-            <h3 className="text-lg font-medium text-gray-700">Access Control Management</h3>
-            <p className="text-gray-800">Manage roles and permissions for admins.</p>
-          </div>
-        </div>
-      </div>
+const SummaryCard = ({ title, value, color }) => (
+    <div className={`bg-${color}-100 p-4 rounded-lg shadow`}>
+        <h3 className={`text-${color}-800 text-lg font-semibold`}>{title}</h3>
+        <p className={`text-${color}-600 text-2xl font-bold`}>{value}</p>
     </div>
-  );
-};
-
-export default AdminDashboard;
+);

@@ -16,12 +16,24 @@ const authenticate = async (req, res, next) => {
             where: { token }
         });
         if (blacklistedToken) {
-            return res.status(401).json({ error: 'Token is blacklisted. Please log in again.' });
+            return res.status(401).json({ 
+                error: 'Token is invalid',
+                code: 'TOKEN_BLACKLISTED'
+            });
         }
 
         // Verify the token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         
+        // Check token expiration with some buffer time (5 minutes)
+        const expirationBuffer = 5 * 60; // 5 minutes in seconds
+        if (decoded.exp - (Date.now() / 1000) < expirationBuffer) {
+            return res.status(401).json({ 
+                error: 'Token is about to expire',
+                code: 'TOKEN_EXPIRING'
+            });
+        }
+
         // Find user using Sequelize
         const user = await User.findByPk(decoded.id);
         if (!user) {
@@ -36,8 +48,14 @@ const authenticate = async (req, res, next) => {
         
         next();
     } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ 
+                error: 'Token has expired',
+                code: 'TOKEN_EXPIRED'
+            });
+        }
         console.error('Token verification failed:', error.message);
-        res.status(401).json({ error: 'Invalid or expired token.' });
+        res.status(401).json({ error: 'Invalid token.' });
     }
 };
 

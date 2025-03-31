@@ -93,47 +93,61 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-
-        // Find the user by email
-        const user = await User.findOne({ 
-            where: { email } 
-        });
+        const user = await User.findOne({ where: { email } });
         if (!user) {
             return res.status(400).json({ error: 'Invalid email or password' });
         }
 
-        // Check the password
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
             return res.status(400).json({ error: 'Invalid email or password' });
         }
 
-        // Generate a JWT token
-        const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, {
-            expiresIn: '1h',
-        });
-
-        // Clean up old blacklisted tokens for this user (using Sequelize's destroy)
-        await BlacklistedToken.destroy({
-            where: { token }
-        });
+        // Generate token with longer expiration (24 hours)
+        const token = jwt.sign(
+            { id: user.id, role: user.role }, 
+            process.env.JWT_SECRET, 
+            { expiresIn: '24h' }
+        );
 
         // Update last login time
         await user.update({ last_login: new Date() });
 
         res.status(200).json({ 
-            message: 'Login successful', 
-            token, 
-            user: { 
-                username: user.username, 
-                email: user.email, 
+            message: 'Login successful',
+            token,
+            user: {
+                username: user.username,
+                email: user.email,
                 role: user.role,
                 account_balance: user.account_balance
-            } 
+            }
         });
     } catch (error) {
-        console.error('Error during login:', error.message);
+        console.error('Login error:', error);
         res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Add refresh token route
+router.post('/refresh-token', authenticate, async (req, res) => {
+    try {
+        const user = await User.findByPk(req.user.id);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Generate new token
+        const newToken = jwt.sign(
+            { id: user.id, role: user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: '24h' }
+        );
+
+        res.status(200).json({ token: newToken });
+    } catch (error) {
+        console.error('Token refresh error:', error);
+        res.status(500).json({ error: 'Failed to refresh token' });
     }
 });
 

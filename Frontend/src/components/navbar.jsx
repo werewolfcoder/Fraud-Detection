@@ -6,9 +6,21 @@ import { AuthContext } from "../context/AuthContext";
 export default function Navbar() {
   const { logout, user } = useContext(AuthContext);
 
-  // Don't show regular navbar for admin users
   if (user?.role === 'admin') {
-    return null;
+    return (
+      <nav className="bg-gray-800 p-4 flex justify-between items-center text-white shadow-md">
+        <h1 className="text-xl font-bold">Admin Panel</h1>
+        <div className="flex gap-6">
+          <Link to="/admin_dashboard" className="hover:underline">Dashboard</Link>
+          <button
+            onClick={logout}
+            className="hover:underline text-red-400 font-medium"
+          >
+            Logout
+          </button>
+        </div>
+      </nav>
+    );
   }
 
   return (

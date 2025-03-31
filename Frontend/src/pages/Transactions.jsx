@@ -83,29 +83,38 @@ export default function Transactions() {
 
         <div className="bg-gray-50 p-4 rounded-lg shadow">
           {transactions.length === 0 ? (
-            <p className="text-center text-gray-500 py-4">
-              No transactions found
-            </p>
+            <p className="text-center text-gray-500 py-4">No transactions found</p>
           ) : (
             transactions.map((txn) => (
-              <div
-                key={txn.id}
-                className="flex justify-between items-center py-3 px-4 border-b last:border-none hover:bg-gray-100"
-              >
-                <div className="flex flex-col">
-                  <span className="font-medium">{txn.merchant}</span>
-                  <span className="text-sm text-gray-500">{txn.location}</span>
+              <div key={txn.id} className="flex flex-col p-4 border-b last:border-none">
+                <div className="flex justify-between items-center">
+                  <div className="flex flex-col">
+                    <span className="font-medium">{txn.merchant}</span>
+                    <span className="text-sm text-gray-500">{txn.transaction_type}</span>
+                  </div>
+                  <span className={`font-semibold ${
+                    parseFloat(txn.transaction_amount) < 0 ? "text-red-500" : "text-green-500"
+                  }`}>
+                    ₹{Math.abs(parseFloat(txn.transaction_amount))}
+                  </span>
                 </div>
-                <span
-                  className={`font-semibold ${
-                    txn.amount < 0 ? "text-red-500" : "text-green-500"
-                  }`}
-                >
-                  ₹{Math.abs(parseFloat(txn.amount)).toFixed(2)}
-                </span>
-                <span className="text-gray-500">
-                  {new Date(txn.transaction_date).toLocaleDateString()}
-                </span>
+                <div className="mt-2 text-sm text-gray-500 flex justify-between">
+                  <div>
+                    <div>Location: {txn.transaction_location}</div>
+                  </div>
+                  <div className="text-right">
+                    <div>Balance: ₹{txn.account_balance}</div>
+                    <div>
+                      {new Date(txn.transaction_time).toLocaleString('en-IN', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </div>
+                  </div>
+                </div>
               </div>
             ))
           )}

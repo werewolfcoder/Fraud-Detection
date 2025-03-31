@@ -118,26 +118,37 @@ export function Dashboard() {
         {/* Recent Transactions */}
         <div className="mt-8">
           <h3 className="text-xl font-bold text-gray-700 mb-4">Recent Transactions</h3>
-          <ul className="bg-gray-50 p-4 rounded-lg shadow">
-            {transactions.map((txn) => (
-              <li
-                key={txn.id}
-                className="flex justify-between py-2 border-b last:border-none"
-              >
-                <span>{txn.merchant}</span>
-                <span
-                  className={
-                    parseFloat(txn.amount) < 0 ? "text-red-500" : "text-green-500"
-                  }
-                >
-                  ${parseFloat(txn.amount || 0).toFixed(2)}
-                </span>
-                <span className="text-gray-500">
-                  {new Date(txn.transaction_date).toLocaleDateString()}
-                </span>
-              </li>
-            ))}
-          </ul>
+          <div className="bg-gray-50 rounded-lg shadow divide-y">
+            {transactions.length === 0 ? (
+              <p className="text-center py-4 text-gray-500">No recent transactions</p>
+            ) : (
+              transactions.map((txn) => (
+                <div key={txn.id} className="p-4 flex justify-between items-center">
+                  <div className="flex flex-col">
+                    <span className="font-medium">{txn.merchant}</span>
+                    <span className="text-sm text-gray-500">{txn.transaction_type}</span>
+                    <span className="text-xs text-gray-400">{txn.transaction_location}</span>
+                  </div>
+                  <div className="text-right">
+                    <span className={`font-semibold ${
+                      parseFloat(txn.transaction_amount) < 0 ? "text-red-500" : "text-green-500"
+                    }`}>
+                      ₹{Math.abs(parseFloat(txn.transaction_amount))}
+                    </span>
+                    <div className="text-xs text-gray-400">
+                      {new Date(txn.transaction_time).toLocaleString('en-IN', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
     </div>

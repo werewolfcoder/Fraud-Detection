@@ -1,0 +1,101 @@
+2025-03-31 08:53:28,310 - INFO - Loading models and preprocessing objects
+2025-03-31 08:55:24,747 - INFO - Loading models and preprocessing objects
+2025-03-31 08:59:07,508 - INFO - Model directory: C:\Users\arun\Documents\HackNuThon\Backend\mlModels
+2025-03-31 08:59:07,509 - INFO - Loading models and preprocessing objects
+2025-03-31 08:59:08,669 - INFO - Models loaded successfully
+2025-03-31 08:59:08,669 - INFO - Received input: {"transaction_amount":20000,"account_balance":15005900,"merchant_category":"Transfer","transaction_type":"Bank Transfer","transaction_hour":8,"transaction_location":"ahmedabad, gujarat","avg_amount_24h":0,"fraud_ratio":0,"tx_frequency_24h":0}
+2025-03-31 08:59:08,669 - INFO - Parsed features: {'transaction_amount': 20000, 'account_balance': 15005900, 'merchant_category': 'Transfer', 'transaction_type': 'Bank Transfer', 'transaction_hour': 8, 'transaction_location': 'ahmedabad, gujarat', 'avg_amount_24h': 0, 'fraud_ratio': 0, 'tx_frequency_24h': 0}
+2025-03-31 08:59:08,670 - INFO - Processing features
+2025-03-31 08:59:08,672 - WARNING - Error making prediction, using fallback: "None of [Index(['Gender', 'Age', 'State', 'City', 'Bank_Branch', 'Account_Type',\n       'Transaction_Date', 'Transaction_Amount', 'Merchant_ID',\n       'Transaction_Type', 'Merchant_Category', 'Account_Balance',\n       'Transaction_Device', 'Transaction_Location', 'Device_Type',\n       'Transaction_Currency', 'Transaction_Description', 'Transaction_Freq',\n       'Transaction_Per_Balance', 'Transaction_Hour', 'Is_Night_Transaction',\n       'High_Transaction', 'Risky_Merchant'],\n      dtype='object')] are in the [columns]"
+2025-03-31 08:59:08,672 - INFO - Prediction result: {'fraud_probability': 0.1, 'is_fraud': False}
+2025-03-31 08:59:08,672 - INFO - Prediction completed successfully
+2025-03-31 09:00:24,459 - INFO - Model directory: C:\Users\arun\Documents\HackNuThon\Backend\mlModels
+2025-03-31 09:00:24,459 - INFO - Loading models and preprocessing objects
+2025-03-31 09:00:25,573 - INFO - Models loaded successfully
+2025-03-31 09:00:25,574 - INFO - Received input: {"transaction_amount":20000,"account_balance":15005900,"merchant_category":"Transfer","transaction_type":"Bank Transfer","transaction_hour":9,"transaction_location":"ahmedabad, gujarat","avg_amount_24h":0,"fraud_ratio":0,"tx_frequency_24h":0}
+2025-03-31 09:00:25,574 - INFO - Parsed features: {'transaction_amount': 20000, 'account_balance': 15005900, 'merchant_category': 'Transfer', 'transaction_type': 'Bank Transfer', 'transaction_hour': 9, 'transaction_location': 'ahmedabad, gujarat', 'avg_amount_24h': 0, 'fraud_ratio': 0, 'tx_frequency_24h': 0}
+2025-03-31 09:00:25,574 - INFO - Processing features
+2025-03-31 09:00:25,576 - WARNING - Error making prediction, using fallback: "None of [Index(['Gender', 'Age', 'State', 'City', 'Bank_Branch', 'Account_Type',\n       'Transaction_Date', 'Transaction_Amount', 'Merchant_ID',\n       'Transaction_Type', 'Merchant_Category', 'Account_Balance',\n       'Transaction_Device', 'Transaction_Location', 'Device_Type',\n       'Transaction_Currency', 'Transaction_Description', 'Transaction_Freq',\n       'Transaction_Per_Balance', 'Transaction_Hour', 'Is_Night_Transaction',\n       'High_Transaction', 'Risky_Merchant'],\n      dtype='object')] are in the [columns]"
+2025-03-31 09:00:25,576 - INFO - Prediction result: {'fraud_probability': 0.1, 'is_fraud': False}
+2025-03-31 09:00:25,576 - INFO - Prediction completed successfully
+2025-03-31 09:18:08,745 - INFO - Model directory: C:\Users\arun\Documents\HackNuThon\Backend\mlModels
+2025-03-31 09:18:08,745 - INFO - Loading models and preprocessing objects
+2025-03-31 09:18:09,938 - INFO - Models loaded successfully
+2025-03-31 09:18:09,938 - INFO - Received input: {"transaction_amount":100000000000,"account_balance":14985900,"merchant_category":"Deposit","transaction_type":"Cash Deposit","transaction_hour":9,"transaction_location":"Bank Branch","avg_amount_24h":0,"fraud_ratio":0,"tx_frequency_24h":0}
+2025-03-31 09:18:09,938 - INFO - Parsed features: {'transaction_amount': 100000000000, 'account_balance': 14985900, 'merchant_category': 'Deposit', 'transaction_type': 'Cash Deposit', 'transaction_hour': 9, 'transaction_location': 'Bank Branch', 'avg_amount_24h': 0, 'fraud_ratio': 0, 'tx_frequency_24h': 0}
+2025-03-31 09:18:09,939 - INFO - Processing features
+2025-03-31 09:18:09,940 - WARNING - Error making prediction, using fallback: "None of [Index(['Gender', 'Age', 'State', 'City', 'Bank_Branch', 'Account_Type',\n       'Transaction_Date', 'Transaction_Amount', 'Merchant_ID',\n       'Transaction_Type', 'Merchant_Category', 'Account_Balance',\n       'Transaction_Device', 'Transaction_Location', 'Device_Type',\n       'Transaction_Currency', 'Transaction_Description', 'Transaction_Freq',\n       'Transaction_Per_Balance', 'Transaction_Hour', 'Is_Night_Transaction',\n       'High_Transaction', 'Risky_Merchant'],\n      dtype='object')] are in the [columns]"
+2025-03-31 09:18:09,941 - INFO - Prediction result: {'fraud_probability': 0.1, 'is_fraud': False}
+2025-03-31 09:18:09,941 - INFO - Prediction completed successfully
+2025-03-31 09:18:46,726 - INFO - Model directory: C:\Users\arun\Documents\HackNuThon\Backend\mlModels
+2025-03-31 09:18:46,726 - INFO - Loading models and preprocessing objects
+2025-03-31 09:18:47,828 - INFO - Models loaded successfully
+2025-03-31 09:18:47,829 - INFO - Received input: {"transaction_amount":10,"account_balance":14985900,"merchant_category":"Deposit","transaction_type":"Cash Deposit","transaction_hour":9,"transaction_location":"Bank Branch","avg_amount_24h":0,"fraud_ratio":0,"tx_frequency_24h":0}
+2025-03-31 09:18:47,829 - INFO - Parsed features: {'transaction_amount': 10, 'account_balance': 14985900, 'merchant_category': 'Deposit', 'transaction_type': 'Cash Deposit', 'transaction_hour': 9, 'transaction_location': 'Bank Branch', 'avg_amount_24h': 0, 'fraud_ratio': 0, 'tx_frequency_24h': 0}
+2025-03-31 09:18:47,829 - INFO - Processing features
+2025-03-31 09:18:47,831 - WARNING - Error making prediction, using fallback: "None of [Index(['Gender', 'Age', 'State', 'City', 'Bank_Branch', 'Account_Type',\n       'Transaction_Date', 'Transaction_Amount', 'Merchant_ID',\n       'Transaction_Type', 'Merchant_Category', 'Account_Balance',\n       'Transaction_Device', 'Transaction_Location', 'Device_Type',\n       'Transaction_Currency', 'Transaction_Description', 'Transaction_Freq',\n       'Transaction_Per_Balance', 'Transaction_Hour', 'Is_Night_Transaction',\n       'High_Transaction', 'Risky_Merchant'],\n      dtype='object')] are in the [columns]"
+2025-03-31 09:18:47,831 - INFO - Prediction result: {'fraud_probability': 0.1, 'is_fraud': False}
+2025-03-31 09:18:47,831 - INFO - Prediction completed successfully
+2025-03-31 09:19:15,504 - INFO - Model directory: C:\Users\arun\Documents\HackNuThon\Backend\mlModels
+2025-03-31 09:19:15,505 - INFO - Loading models and preprocessing objects
+2025-03-31 09:19:16,620 - INFO - Models loaded successfully
+2025-03-31 09:19:16,621 - INFO - Received input: {"transaction_amount":10000,"account_balance":14985900,"merchant_category":"Deposit","transaction_type":"Cash Deposit","transaction_hour":9,"transaction_location":"Bank Branch","avg_amount_24h":0,"fraud_ratio":0,"tx_frequency_24h":0}
+2025-03-31 09:19:16,621 - INFO - Parsed features: {'transaction_amount': 10000, 'account_balance': 14985900, 'merchant_category': 'Deposit', 'transaction_type': 'Cash Deposit', 'transaction_hour': 9, 'transaction_location': 'Bank Branch', 'avg_amount_24h': 0, 'fraud_ratio': 0, 'tx_frequency_24h': 0}
+2025-03-31 09:19:16,621 - INFO - Processing features
+2025-03-31 09:19:16,623 - WARNING - Error making prediction, using fallback: "None of [Index(['Gender', 'Age', 'State', 'City', 'Bank_Branch', 'Account_Type',\n       'Transaction_Date', 'Transaction_Amount', 'Merchant_ID',\n       'Transaction_Type', 'Merchant_Category', 'Account_Balance',\n       'Transaction_Device', 'Transaction_Location', 'Device_Type',\n       'Transaction_Currency', 'Transaction_Description', 'Transaction_Freq',\n       'Transaction_Per_Balance', 'Transaction_Hour', 'Is_Night_Transaction',\n       'High_Transaction', 'Risky_Merchant'],\n      dtype='object')] are in the [columns]"
+2025-03-31 09:19:16,623 - INFO - Prediction result: {'fraud_probability': 0.1, 'is_fraud': False}
+2025-03-31 09:19:16,623 - INFO - Prediction completed successfully
+2025-03-31 09:19:57,952 - INFO - Model directory: C:\Users\arun\Documents\HackNuThon\Backend\mlModels
+2025-03-31 09:19:57,952 - INFO - Loading models and preprocessing objects
+2025-03-31 09:19:59,096 - INFO - Models loaded successfully
+2025-03-31 09:19:59,097 - INFO - Received input: {"transaction_amount":50000,"account_balance":14985900,"merchant_category":"Transfer","transaction_type":"Bank Transfer","transaction_hour":9,"transaction_location":"SHREENAGAR, JAMMU","avg_amount_24h":0,"fraud_ratio":0,"tx_frequency_24h":0}
+2025-03-31 09:19:59,097 - INFO - Parsed features: {'transaction_amount': 50000, 'account_balance': 14985900, 'merchant_category': 'Transfer', 'transaction_type': 'Bank Transfer', 'transaction_hour': 9, 'transaction_location': 'SHREENAGAR, JAMMU', 'avg_amount_24h': 0, 'fraud_ratio': 0, 'tx_frequency_24h': 0}
+2025-03-31 09:19:59,097 - INFO - Processing features
+2025-03-31 09:19:59,099 - WARNING - Error making prediction, using fallback: "None of [Index(['Gender', 'Age', 'State', 'City', 'Bank_Branch', 'Account_Type',\n       'Transaction_Date', 'Transaction_Amount', 'Merchant_ID',\n       'Transaction_Type', 'Merchant_Category', 'Account_Balance',\n       'Transaction_Device', 'Transaction_Location', 'Device_Type',\n       'Transaction_Currency', 'Transaction_Description', 'Transaction_Freq',\n       'Transaction_Per_Balance', 'Transaction_Hour', 'Is_Night_Transaction',\n       'High_Transaction', 'Risky_Merchant'],\n      dtype='object')] are in the [columns]"
+2025-03-31 09:19:59,099 - INFO - Prediction result: {'fraud_probability': 0.1, 'is_fraud': False}
+2025-03-31 09:19:59,099 - INFO - Prediction completed successfully
+2025-03-31 09:25:00,868 - INFO - Model directory: C:\Users\arun\Documents\HackNuThon\Backend\mlModels
+2025-03-31 09:25:00,869 - INFO - Loading models and preprocessing objects
+2025-03-31 09:25:02,045 - INFO - Models loaded successfully
+2025-03-31 09:25:02,046 - INFO - Received input: {"transaction_amount":10,"account_balance":1000,"merchant_category":"Transfer","transaction_type":"Bank Transfer","transaction_hour":9,"transaction_location":"Ahmedabad, Gujarat","avg_amount_24h":0,"fraud_ratio":0,"tx_frequency_24h":0}
+2025-03-31 09:25:02,046 - INFO - Parsed features: {'transaction_amount': 10, 'account_balance': 1000, 'merchant_category': 'Transfer', 'transaction_type': 'Bank Transfer', 'transaction_hour': 9, 'transaction_location': 'Ahmedabad, Gujarat', 'avg_amount_24h': 0, 'fraud_ratio': 0, 'tx_frequency_24h': 0}
+2025-03-31 09:25:02,046 - INFO - Processing features
+2025-03-31 09:25:02,048 - WARNING - Error making prediction, using fallback: "None of [Index(['Gender', 'Age', 'State', 'City', 'Bank_Branch', 'Account_Type',\n       'Transaction_Date', 'Transaction_Amount', 'Merchant_ID',\n       'Transaction_Type', 'Merchant_Category', 'Account_Balance',\n       'Transaction_Device', 'Transaction_Location', 'Device_Type',\n       'Transaction_Currency', 'Transaction_Description', 'Transaction_Freq',\n       'Transaction_Per_Balance', 'Transaction_Hour', 'Is_Night_Transaction',\n       'High_Transaction', 'Risky_Merchant'],\n      dtype='object')] are in the [columns]"
+2025-03-31 09:25:02,048 - INFO - Prediction result: {'fraud_probability': 0.1, 'is_fraud': False}
+2025-03-31 09:25:02,049 - INFO - Prediction completed successfully
+2025-03-31 09:25:51,574 - INFO - Model directory: C:\Users\arun\Documents\HackNuThon\Backend\mlModels
+2025-03-31 09:25:51,574 - INFO - Loading models and preprocessing objects
+2025-03-31 09:25:52,669 - INFO - Models loaded successfully
+2025-03-31 09:25:52,670 - INFO - Received input: {"transaction_amount":20,"account_balance":990,"merchant_category":"Transfer","transaction_type":"Bank Transfer","transaction_hour":9,"transaction_location":"Ahmedabad, Gujarat","avg_amount_24h":0,"fraud_ratio":0,"tx_frequency_24h":0}
+2025-03-31 09:25:52,670 - INFO - Parsed features: {'transaction_amount': 20, 'account_balance': 990, 'merchant_category': 'Transfer', 'transaction_type': 'Bank Transfer', 'transaction_hour': 9, 'transaction_location': 'Ahmedabad, Gujarat', 'avg_amount_24h': 0, 'fraud_ratio': 0, 'tx_frequency_24h': 0}
+2025-03-31 09:25:52,670 - INFO - Processing features
+2025-03-31 09:25:52,672 - WARNING - Error making prediction, using fallback: "None of [Index(['Gender', 'Age', 'State', 'City', 'Bank_Branch', 'Account_Type',\n       'Transaction_Date', 'Transaction_Amount', 'Merchant_ID',\n       'Transaction_Type', 'Merchant_Category', 'Account_Balance',\n       'Transaction_Device', 'Transaction_Location', 'Device_Type',\n       'Transaction_Currency', 'Transaction_Description', 'Transaction_Freq',\n       'Transaction_Per_Balance', 'Transaction_Hour', 'Is_Night_Transaction',\n       'High_Transaction', 'Risky_Merchant'],\n      dtype='object')] are in the [columns]"
+2025-03-31 09:25:52,672 - INFO - Prediction result: {'fraud_probability': 0.1, 'is_fraud': False}
+2025-03-31 09:25:52,672 - INFO - Prediction completed successfully
+2025-03-31 09:26:46,797 - INFO - Model directory: C:\Users\arun\Documents\HackNuThon\Backend\mlModels
+2025-03-31 09:26:46,797 - INFO - Loading models and preprocessing objects
+2025-03-31 09:26:47,942 - INFO - Models loaded successfully
+2025-03-31 09:26:47,942 - INFO - Received input: {"transaction_amount":70,"account_balance":970,"merchant_category":"Transfer","transaction_type":"Bank Transfer","transaction_hour":9,"transaction_location":"Ahmedbad, Gujarat","avg_amount_24h":0,"fraud_ratio":0,"tx_frequency_24h":0}
+2025-03-31 09:26:47,943 - INFO - Parsed features: {'transaction_amount': 70, 'account_balance': 970, 'merchant_category': 'Transfer', 'transaction_type': 'Bank Transfer', 'transaction_hour': 9, 'transaction_location': 'Ahmedbad, Gujarat', 'avg_amount_24h': 0, 'fraud_ratio': 0, 'tx_frequency_24h': 0}
+2025-03-31 09:26:47,943 - INFO - Processing features
+2025-03-31 09:26:47,945 - WARNING - Error making prediction, using fallback: "None of [Index(['Gender', 'Age', 'State', 'City', 'Bank_Branch', 'Account_Type',\n       'Transaction_Date', 'Transaction_Amount', 'Merchant_ID',\n       'Transaction_Type', 'Merchant_Category', 'Account_Balance',\n       'Transaction_Device', 'Transaction_Location', 'Device_Type',\n       'Transaction_Currency', 'Transaction_Description', 'Transaction_Freq',\n       'Transaction_Per_Balance', 'Transaction_Hour', 'Is_Night_Transaction',\n       'High_Transaction', 'Risky_Merchant'],\n      dtype='object')] are in the [columns]"
+2025-03-31 09:26:47,945 - INFO - Prediction result: {'fraud_probability': 0.1, 'is_fraud': False}
+2025-03-31 09:26:47,945 - INFO - Prediction completed successfully
+2025-03-31 09:27:01,106 - INFO - Model directory: C:\Users\arun\Documents\HackNuThon\Backend\mlModels
+2025-03-31 09:27:01,106 - INFO - Loading models and preprocessing objects
+2025-03-31 09:27:02,188 - INFO - Models loaded successfully
+2025-03-31 09:27:02,189 - INFO - Received input: {"transaction_amount":11000000,"account_balance":900,"merchant_category":"Deposit","transaction_type":"Cash Deposit","transaction_hour":9,"transaction_location":"Bank Branch","avg_amount_24h":0,"fraud_ratio":0,"tx_frequency_24h":0}
+2025-03-31 09:27:02,189 - INFO - Parsed features: {'transaction_amount': 11000000, 'account_balance': 900, 'merchant_category': 'Deposit', 'transaction_type': 'Cash Deposit', 'transaction_hour': 9, 'transaction_location': 'Bank Branch', 'avg_amount_24h': 0, 'fraud_ratio': 0, 'tx_frequency_24h': 0}
+2025-03-31 09:27:02,189 - INFO - Processing features
+2025-03-31 09:27:02,191 - WARNING - Error making prediction, using fallback: "None of [Index(['Gender', 'Age', 'State', 'City', 'Bank_Branch', 'Account_Type',\n       'Transaction_Date', 'Transaction_Amount', 'Merchant_ID',\n       'Transaction_Type', 'Merchant_Category', 'Account_Balance',\n       'Transaction_Device', 'Transaction_Location', 'Device_Type',\n       'Transaction_Currency', 'Transaction_Description', 'Transaction_Freq',\n       'Transaction_Per_Balance', 'Transaction_Hour', 'Is_Night_Transaction',\n       'High_Transaction', 'Risky_Merchant'],\n      dtype='object')] are in the [columns]"
+2025-03-31 09:27:02,191 - INFO - Prediction result: {'fraud_probability': 0.1, 'is_fraud': False}
+2025-03-31 09:27:02,192 - INFO - Prediction completed successfully
+2025-03-31 09:29:59,983 - INFO - Model directory: C:\Users\arun\Documents\HackNuThon\Backend\mlModels
+2025-03-31 09:29:59,984 - INFO - Loading models and preprocessing objects
+2025-03-31 09:30:01,141 - INFO - Models loaded successfully
+2025-03-31 09:30:01,141 - INFO - Received input: {"transaction_amount":1000000,"account_balance":900,"merchant_category":"Deposit","transaction_type":"Cash Deposit","transaction_hour":9,"transaction_location":"Bank Branch","avg_amount_24h":0,"fraud_ratio":0,"tx_frequency_24h":0}
+2025-03-31 09:30:01,141 - INFO - Parsed features: {'transaction_amount': 1000000, 'account_balance': 900, 'merchant_category': 'Deposit', 'transaction_type': 'Cash Deposit', 'transaction_hour': 9, 'transaction_location': 'Bank Branch', 'avg_amount_24h': 0, 'fraud_ratio': 0, 'tx_frequency_24h': 0}
+2025-03-31 09:30:01,141 - INFO - Processing features
+2025-03-31 09:30:01,143 - WARNING - Error making prediction, using fallback: "None of [Index(['Gender', 'Age', 'State', 'City', 'Bank_Branch', 'Account_Type',\n       'Transaction_Date', 'Transaction_Amount', 'Merchant_ID',\n       'Transaction_Type', 'Merchant_Category', 'Account_Balance',\n       'Transaction_Device', 'Transaction_Location', 'Device_Type',\n       'Transaction_Currency', 'Transaction_Description', 'Transaction_Freq',\n       'Transaction_Per_Balance', 'Transaction_Hour', 'Is_Night_Transaction',\n       'High_Transaction', 'Risky_Merchant'],\n      dtype='object')] are in the [columns]"
+2025-03-31 09:30:01,144 - INFO - Prediction result: {'fraud_probability': 0.1, 'is_fraud': False}
+2025-03-31 09:30:01,144 - INFO - Prediction completed successfully

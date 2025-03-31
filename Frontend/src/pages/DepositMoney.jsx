@@ -7,7 +7,7 @@ export default function DepositMoney() {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const { user, setUser } = useContext(AuthContext);
+  const { user, updateUserBalance } = useContext(AuthContext);
 
   const handleDeposit = async () => {
     try {
@@ -36,10 +36,8 @@ export default function DepositMoney() {
       );
 
       if (response.status === 201) {
-        setUser(prev => ({
-          ...prev,
-          account_balance: response.data.newBalance
-        }));
+        // Update user balance in context
+        updateUserBalance(response.data.newBalance);
         alert("Money deposited successfully!");
         setAmount("");
       }

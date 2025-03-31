@@ -1,0 +1,277 @@
+2025-03-31 09:33:10,142 - ERROR - Fatal error
+Traceback (most recent call last):
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 407, in pandas_feature_info
+    new_feature_types.append(_pandas_dtype_mapper[dtype.name])
+                             ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'object'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\arun\Documents\HackNuThon\Backend\mlModels\predict.py", line 73, in <module>
+    xgb_prob = xgb_model.predict_proba(features_df)[:, 1][0]
+               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\sklearn.py", line 1797, in predict_proba
+    class_probs = super().predict(
+        X=X,
+    ...<2 lines>...
+        iteration_range=iteration_range,
+    )
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\core.py", line 729, in inner_f
+    return func(**kwargs)
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\sklearn.py", line 1327, in predict
+    predts = self.get_booster().inplace_predict(
+        data=X,
+    ...<4 lines>...
+        validate_features=validate_features,
+    )
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\core.py", line 729, in inner_f
+    return func(**kwargs)
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\core.py", line 2665, in inplace_predict
+    data, fns, _ = _transform_pandas_df(data, enable_categorical)
+                   ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 640, in _transform_pandas_df
+    feature_names, feature_types = pandas_feature_info(
+                                   ~~~~~~~~~~~~~~~~~~~^
+        data, meta, feature_names, feature_types, enable_categorical
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 409, in pandas_feature_info
+    _invalid_dataframe_dtype(data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 372, in _invalid_dataframe_dtype
+    raise ValueError(msg)
+ValueError: DataFrame.dtypes for data must be int, float, bool or category. When categorical type is supplied, the experimental DMatrix parameter`enable_categorical` must be set to `True`.  Invalid columns:Gender: object, State: object, City: object, Bank_Branch: object, Account_Type: object, Merchant_ID: object, Transaction_Type: object, Merchant_Category: object, Transaction_Device: object, Transaction_Location: object, Device_Type: object, Transaction_Currency: object
+2025-03-31 09:34:26,502 - ERROR - Fatal error
+Traceback (most recent call last):
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 407, in pandas_feature_info
+    new_feature_types.append(_pandas_dtype_mapper[dtype.name])
+                             ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'object'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\arun\Documents\HackNuThon\Backend\mlModels\predict.py", line 73, in <module>
+    xgb_prob = xgb_model.predict_proba(features_df)[:, 1][0]
+               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\sklearn.py", line 1797, in predict_proba
+    class_probs = super().predict(
+        X=X,
+    ...<2 lines>...
+        iteration_range=iteration_range,
+    )
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\core.py", line 729, in inner_f
+    return func(**kwargs)
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\sklearn.py", line 1327, in predict
+    predts = self.get_booster().inplace_predict(
+        data=X,
+    ...<4 lines>...
+        validate_features=validate_features,
+    )
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\core.py", line 729, in inner_f
+    return func(**kwargs)
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\core.py", line 2665, in inplace_predict
+    data, fns, _ = _transform_pandas_df(data, enable_categorical)
+                   ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 640, in _transform_pandas_df
+    feature_names, feature_types = pandas_feature_info(
+                                   ~~~~~~~~~~~~~~~~~~~^
+        data, meta, feature_names, feature_types, enable_categorical
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 409, in pandas_feature_info
+    _invalid_dataframe_dtype(data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 372, in _invalid_dataframe_dtype
+    raise ValueError(msg)
+ValueError: DataFrame.dtypes for data must be int, float, bool or category. When categorical type is supplied, the experimental DMatrix parameter`enable_categorical` must be set to `True`.  Invalid columns:Gender: object, State: object, City: object, Bank_Branch: object, Account_Type: object, Merchant_ID: object, Transaction_Type: object, Merchant_Category: object, Transaction_Device: object, Transaction_Location: object, Device_Type: object, Transaction_Currency: object
+2025-03-31 09:35:05,566 - ERROR - Fatal error
+Traceback (most recent call last):
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 407, in pandas_feature_info
+    new_feature_types.append(_pandas_dtype_mapper[dtype.name])
+                             ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'object'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\arun\Documents\HackNuThon\Backend\mlModels\predict.py", line 73, in <module>
+    xgb_prob = xgb_model.predict_proba(features_df)[:, 1][0]
+               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\sklearn.py", line 1797, in predict_proba
+    class_probs = super().predict(
+        X=X,
+    ...<2 lines>...
+        iteration_range=iteration_range,
+    )
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\core.py", line 729, in inner_f
+    return func(**kwargs)
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\sklearn.py", line 1327, in predict
+    predts = self.get_booster().inplace_predict(
+        data=X,
+    ...<4 lines>...
+        validate_features=validate_features,
+    )
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\core.py", line 729, in inner_f
+    return func(**kwargs)
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\core.py", line 2665, in inplace_predict
+    data, fns, _ = _transform_pandas_df(data, enable_categorical)
+                   ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 640, in _transform_pandas_df
+    feature_names, feature_types = pandas_feature_info(
+                                   ~~~~~~~~~~~~~~~~~~~^
+        data, meta, feature_names, feature_types, enable_categorical
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 409, in pandas_feature_info
+    _invalid_dataframe_dtype(data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 372, in _invalid_dataframe_dtype
+    raise ValueError(msg)
+ValueError: DataFrame.dtypes for data must be int, float, bool or category. When categorical type is supplied, the experimental DMatrix parameter`enable_categorical` must be set to `True`.  Invalid columns:Gender: object, State: object, City: object, Bank_Branch: object, Account_Type: object, Merchant_ID: object, Transaction_Type: object, Merchant_Category: object, Transaction_Device: object, Transaction_Location: object, Device_Type: object, Transaction_Currency: object
+2025-03-31 09:35:31,916 - ERROR - Fatal error
+Traceback (most recent call last):
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 407, in pandas_feature_info
+    new_feature_types.append(_pandas_dtype_mapper[dtype.name])
+                             ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'object'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\arun\Documents\HackNuThon\Backend\mlModels\predict.py", line 73, in <module>
+    xgb_prob = xgb_model.predict_proba(features_df)[:, 1][0]
+               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\sklearn.py", line 1797, in predict_proba
+    class_probs = super().predict(
+        X=X,
+    ...<2 lines>...
+        iteration_range=iteration_range,
+    )
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\core.py", line 729, in inner_f
+    return func(**kwargs)
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\sklearn.py", line 1327, in predict
+    predts = self.get_booster().inplace_predict(
+        data=X,
+    ...<4 lines>...
+        validate_features=validate_features,
+    )
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\core.py", line 729, in inner_f
+    return func(**kwargs)
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\core.py", line 2665, in inplace_predict
+    data, fns, _ = _transform_pandas_df(data, enable_categorical)
+                   ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 640, in _transform_pandas_df
+    feature_names, feature_types = pandas_feature_info(
+                                   ~~~~~~~~~~~~~~~~~~~^
+        data, meta, feature_names, feature_types, enable_categorical
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 409, in pandas_feature_info
+    _invalid_dataframe_dtype(data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 372, in _invalid_dataframe_dtype
+    raise ValueError(msg)
+ValueError: DataFrame.dtypes for data must be int, float, bool or category. When categorical type is supplied, the experimental DMatrix parameter`enable_categorical` must be set to `True`.  Invalid columns:Gender: object, State: object, City: object, Bank_Branch: object, Account_Type: object, Merchant_ID: object, Transaction_Type: object, Merchant_Category: object, Transaction_Device: object, Transaction_Location: object, Device_Type: object, Transaction_Currency: object
+2025-03-31 09:36:12,799 - ERROR - Fatal error
+Traceback (most recent call last):
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 407, in pandas_feature_info
+    new_feature_types.append(_pandas_dtype_mapper[dtype.name])
+                             ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'object'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\arun\Documents\HackNuThon\Backend\mlModels\predict.py", line 73, in <module>
+    xgb_prob = xgb_model.predict_proba(features_df)[:, 1][0]
+               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\sklearn.py", line 1797, in predict_proba
+    class_probs = super().predict(
+        X=X,
+    ...<2 lines>...
+        iteration_range=iteration_range,
+    )
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\core.py", line 729, in inner_f
+    return func(**kwargs)
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\sklearn.py", line 1327, in predict
+    predts = self.get_booster().inplace_predict(
+        data=X,
+    ...<4 lines>...
+        validate_features=validate_features,
+    )
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\core.py", line 729, in inner_f
+    return func(**kwargs)
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\core.py", line 2665, in inplace_predict
+    data, fns, _ = _transform_pandas_df(data, enable_categorical)
+                   ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 640, in _transform_pandas_df
+    feature_names, feature_types = pandas_feature_info(
+                                   ~~~~~~~~~~~~~~~~~~~^
+        data, meta, feature_names, feature_types, enable_categorical
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 409, in pandas_feature_info
+    _invalid_dataframe_dtype(data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\xgboost\data.py", line 372, in _invalid_dataframe_dtype
+    raise ValueError(msg)
+ValueError: DataFrame.dtypes for data must be int, float, bool or category. When categorical type is supplied, the experimental DMatrix parameter`enable_categorical` must be set to `True`.  Invalid columns:Gender: object, State: object, City: object, Bank_Branch: object, Account_Type: object, Merchant_ID: object, Transaction_Type: object, Merchant_Category: object, Transaction_Device: object, Transaction_Location: object, Device_Type: object, Transaction_Currency: object
+2025-03-31 10:07:17,695 - ERROR - Fatal error
+Traceback (most recent call last):
+  File "C:\Users\arun\Documents\HackNuThon\Backend\mlModels\predict.py", line 31, in <module>
+    xgb_model = joblib.load(model_files['xgb'])
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\joblib\numpy_pickle.py", line 650, in load
+    with open(filename, 'rb') as f:
+         ~~~~^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\arun\\Documents\\HackNuThon\\Backend\\mlModels\\xgboost_fraud_model.pkl(1)'
+2025-03-31 10:08:42,132 - ERROR - Fatal error
+Traceback (most recent call last):
+  File "C:\Users\arun\Documents\HackNuThon\Backend\mlModels\predict.py", line 31, in <module>
+    xgb_model = joblib.load(model_files['xgb'])
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\joblib\numpy_pickle.py", line 650, in load
+    with open(filename, 'rb') as f:
+         ~~~~^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\arun\\Documents\\HackNuThon\\Backend\\mlModels\\xgboost_fraud_model.pkl(1)'
+2025-03-31 10:14:06,544 - ERROR - Fatal error
+Traceback (most recent call last):
+  File "C:\Users\arun\Documents\HackNuThon\Backend\mlModels\predict.py", line 31, in <module>
+    xgb_model = joblib.load(model_files['xgb'])
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\joblib\numpy_pickle.py", line 650, in load
+    with open(filename, 'rb') as f:
+         ~~~~^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\arun\\Documents\\HackNuThon\\Backend\\mlModels\\xgboost_fraud_model.pkl(1)'
+2025-03-31 10:14:49,394 - ERROR - Fatal error
+Traceback (most recent call last):
+  File "C:\Users\arun\Documents\HackNuThon\Backend\mlModels\predict.py", line 31, in <module>
+    xgb_model = joblib.load(model_files['xgb'])
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\joblib\numpy_pickle.py", line 650, in load
+    with open(filename, 'rb') as f:
+         ~~~~^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\arun\\Documents\\HackNuThon\\Backend\\mlModels\\xgboost_fraud_model.pkl(1)'
+2025-03-31 10:15:27,947 - ERROR - Fatal error
+Traceback (most recent call last):
+  File "C:\Users\arun\Documents\HackNuThon\Backend\mlModels\predict.py", line 31, in <module>
+    xgb_model = joblib.load(model_files['xgb'])
+  File "C:\Users\arun\AppData\Local\Programs\Python\Python313\Lib\site-packages\joblib\numpy_pickle.py", line 650, in load
+    with open(filename, 'rb') as f:
+         ~~~~^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\arun\\Documents\\HackNuThon\\Backend\\mlModels\\xgboost_fraud_model.pkl(1)'
+2025-03-31 10:19:58,249 - ERROR - Fatal error
+Traceback (most recent call last):
+  File "C:\Users\arun\Documents\HackNuThon\Backend\mlModels\predict.py", line 19, in <module>
+    base_dir = "r"+Path(__file__).parent.absolute()
+               ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: can only concatenate str (not "WindowsPath") to str
+2025-03-31 10:20:48,354 - ERROR - Fatal error
+Traceback (most recent call last):
+  File "C:\Users\arun\Documents\HackNuThon\Backend\mlModels\predict.py", line 19, in <module>
+    base_dir = "r"+Path(__file__).parent.absolute()
+               ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: can only concatenate str (not "WindowsPath") to str

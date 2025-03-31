@@ -1,0 +1,37 @@
+async function processTransaction(req, res) {
+    try {
+        const { user_id, transaction_amount, merchant_category, transaction_type } = req.body;
+        
+        const user = await User.findByPk(user_id);
+        if (!user) return res.status(404).json({ error: 'User not found' });
+
+        const txData = {
+            user_id,
+            transaction_amount,
+            merchant_category,
+            transaction_type,
+            transaction_location: req.body.transaction_location || 'Unknown',
+            account_balance: user.account_balance,
+            transaction_time: new Date()
+        };
+
+        const result = await detectFraud(txData);
+        
+        // Update user balance if not fraud
+        if (!result.isFraud) {
+            await user.update({
+                account_balance: user.account_balance - txData.transaction_amount
+            });
+        }
+
+        res.json({
+            success: true,
+            fraudScore: result.fraudScore,
+            isFraud: result.isFraud,
+            transactionId: result.transactionId
+        });
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}

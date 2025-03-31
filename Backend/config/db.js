@@ -31,19 +31,21 @@ const connectDB = async () => {
         }
         
         await sequelize.authenticate();
+        console.log('Database connection authenticated');
 
         // Initialize model associations
         const User = require('../models/User');
         const Transaction = require('../models/Transaction');
+        const BlacklistedToken = require('../models/BlacklistedToken');
         
+        // Set up associations
         User.associate({ Transaction });
         Transaction.associate({ User });
 
-        // Sync database without overriding tables in production
-        const isDevelopment = process.env.NODE_ENV === 'development';
-        await sequelize.sync({ force: isDevelopment }); // Use force only in development
+        // Sync database with { alter: true } to update schema
+        await sequelize.sync({ alter: true });
+        console.log('Database synchronized successfully');
 
-        console.log('PostgreSQL connected successfully');
     } catch (error) {
         console.error('Database connection error:', error.message);
         process.exit(1);

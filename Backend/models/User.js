@@ -97,7 +97,7 @@ User.prototype.comparePassword = async function(password) {
 User.associate = (models) => {
     User.hasMany(models.Transaction, {
         foreignKey: 'user_id',
-        as: 'transactions'
+        as: 'transactions'  // Make sure this alias matches
     });
 };
 
